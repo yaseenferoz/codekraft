@@ -35,6 +35,7 @@ POST /api/contact
 ```
 
 The API route sends a branded HTML email template through Resend.
+It also stores the lead in Supabase when Supabase environment variables are configured.
 
 Public email:
 
@@ -48,9 +49,58 @@ Required local environment variables:
 RESEND_API_KEY=
 RESEND_FROM_EMAIL=CodeKraft <hello@codekraft.co.in>
 RESEND_DELIVERY_EMAIL=hello@codekraft.co.in
+SUPABASE_URL=
+SUPABASE_SERVICE_ROLE_KEY=
 ```
 
 Important: `hello@codekraft.co.in` must be verified in Resend before production sending from that address.
+
+Supabase table:
+
+```sql
+create table leads (
+  id bigint generated always as identity primary key,
+  name text,
+  email text,
+  phone text,
+  service text,
+  message text,
+  source text default 'chatbot',
+  created_at timestamp with time zone default now()
+);
+```
+
+## CodeKraft AI Assistant
+
+The chatbot uses:
+
+```txt
+POST /api/chat
+```
+
+If `GEMINI_API_KEY` is present, the route calls Gemini with CodeKraft website context only. OpenAI remains optional as a secondary provider. If no AI key is configured, it falls back to the local rule-based answer engine.
+
+Recommended AI environment variables:
+
+```txt
+GEMINI_API_KEY=
+GEMINI_MODEL=gemini-2.5-flash
+```
+
+Optional OpenAI fallback:
+
+```txt
+OPENAI_API_KEY=
+OPENAI_MODEL=gpt-4.1-mini
+```
+
+The assistant is constrained to CodeKraft services, process, client work, team, contact details, AI/cloud/mobile/backend capabilities, and project planning.
+
+When a chatbot message includes an email or phone number, `/api/chat` stores it as a Supabase lead with:
+
+```txt
+source=chatbot
+```
 
 ## Team
 
@@ -110,5 +160,5 @@ npm run lint
 - `.env.local` is ignored by git and should never be committed.
 - The contact API owns the final delivery email; the browser does not expose private delivery configuration.
 - The hero has a WebGL fallback so the homepage still renders if the browser blocks WebGL.
-- The chatbot is local and answers from website content only.
-
+- The chatbot can use Gemini/OpenAI through `/api/chat`, with a local website-content fallback.
+- Chatbot enquiries with email or phone are stored in Supabase `leads`.

@@ -1,0 +1,50 @@
+<svg width="1080" height="1080" viewBox="0 0 1080 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1080" height="1080" rx="220" fill="#050816"/>
+  <circle cx="540" cy="540" r="360" fill="url(#outerGlow)" opacity="0.75"/>
+  <circle cx="540" cy="540" r="286" stroke="#37C9FF" stroke-opacity="0.18" stroke-width="2"/>
+  <circle cx="540" cy="540" r="214" stroke="#8B5CFF" stroke-opacity="0.14" stroke-width="2"/>
+  <rect x="246" y="318" width="588" height="444" rx="112" fill="url(#tileGradient)" stroke="url(#tileStroke)" stroke-width="3"/>
+  <g filter="url(#logoGlow)">
+    <path d="M481.875 390H371.025L267.25 540L371.025 690H481.875L394.1 605L348 540L394.1 475L481.875 390Z" fill="url(#logoBlue)"/>
+    <path d="M507.5 390H597.812V497.5L707.25 390H816.875L660.625 540L816.875 690H707.25L597.812 582.5V690H507.5V390Z" fill="url(#logoViolet)"/>
+  </g>
+  <text x="540" y="846" text-anchor="middle" fill="#F8F9FC" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="800" letter-spacing="8">CODEKRAFT</text>
+  <text x="540" y="900" text-anchor="middle" fill="#37C9FF" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" letter-spacing="5">CRAFTING DIGITAL EXPERIENCES</text>
+  <defs>
+    <radialGradient id="outerGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(540 540) rotate(90) scale(430)">
+      <stop stop-color="#37C9FF" stop-opacity="0.28"/>
+      <stop offset="0.48" stop-color="#6B5CFF" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#050816" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="tileGradient" x1="246" y1="318" x2="834" y2="762" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#061A32"/>
+      <stop offset="0.45" stop-color="#0A1230"/>
+      <stop offset="1" stop-color="#171045"/>
+    </linearGradient>
+    <linearGradient id="tileStroke" x1="246" y1="318" x2="834" y2="762" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#37C9FF"/>
+      <stop offset="0.55" stop-color="#4F8CFF"/>
+      <stop offset="1" stop-color="#8B5CFF"/>
+    </linearGradient>
+    <linearGradient id="logoBlue" x1="267.25" y1="390" x2="481.875" y2="690" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#37C9FF"/>
+      <stop offset="0.58" stop-color="#4F8CFF"/>
+      <stop offset="1" stop-color="#6B5CFF"/>
+    </linearGradient>
+    <linearGradient id="logoViolet" x1="507.5" y1="390" x2="816.875" y2="690" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#37C9FF"/>
+      <stop offset="0.48" stop-color="#6B5CFF"/>
+      <stop offset="1" stop-color="#8B5CFF"/>
+    </linearGradient>
+    <filter id="logoGlow" x="217" y="340" width="650" height="400" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset/>
+      <feGaussianBlur stdDeviation="28"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.215686 0 0 0 0 0.788235 0 0 0 0 1 0 0 0 0.55 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+    </filter>
+  </defs>
+</svg>

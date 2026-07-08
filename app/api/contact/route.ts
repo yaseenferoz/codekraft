@@ -8,6 +8,13 @@ type ContactProject = {
   message: string;
 };
 
+type LeadSaveResult = {
+  saved: boolean;
+  configured: boolean;
+  message?: string;
+  status?: number;
+};
+
 function escapeHtml(value: unknown) {
   return String(value ?? "")
     .replaceAll("&", "&amp;")
@@ -89,6 +96,53 @@ function buildHtmlEmail(project: ContactProject) {
 </html>`;
 }
 
+async function saveLead(project: ContactProject, source: string): Promise<LeadSaveResult> {
+  const supabaseUrl = process.env.SUPABASE_URL;
+  const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!supabaseUrl || !supabaseServiceRoleKey) {
+    return {
+      saved: false,
+      configured: false,
+      message: "Supabase lead storage is not configured.",
+    };
+  }
+
+  const response = await fetch(`${supabaseUrl}/rest/v1/leads`, {
+    method: "POST",
+    headers: {
+      apikey: supabaseServiceRoleKey,
+      Authorization: `Bearer ${supabaseServiceRoleKey}`,
+      "Content-Type": "application/json",
+      Prefer: "return=minimal",
+    },
+    body: JSON.stringify({
+      name: project.name,
+      email: project.email,
+      phone: project.phone ?? "",
+      service: project.service ?? "",
+      message: project.message,
+      source,
+    }),
+  }).catch(() => null);
+
+  if (!response?.ok) {
+    const error = await response?.json().catch(() => null);
+
+    return {
+      saved: false,
+      configured: true,
+      message: error?.message ?? "Supabase could not save this lead.",
+      status: response?.status,
+    };
+  }
+
+  return {
+    saved: true,
+    configured: true,
+  };
+}
+
 export async function POST(request: Request) {
   const payload = await request.json().catch(() => null);
 
@@ -103,6 +157,7 @@ export async function POST(request: Request) {
   const fromEmail = process.env.RESEND_FROM_EMAIL ?? "CodeKraft <onboarding@resend.dev>";
   const deliveryEmail = process.env.RESEND_DELIVERY_EMAIL ?? "hello@codekraft.co.in";
   const project = payload.project as ContactProject;
+  const leadStorage = await saveLead(project, payload.source ?? "contact-form");
 
   if (resendApiKey) {
     const resendResponse = await fetch("https://api.resend.com/emails", {
@@ -126,12 +181,16 @@ export async function POST(request: Request) {
 
       return Response.json(
         {
-          ok: false,
-          mode: "resend-error",
-          message: resendError?.message ?? "Resend could not send this message.",
+          ok: leadStorage.saved,
+          mode: leadStorage.saved ? "supabase-only" : "resend-error",
+          leadSaved: leadStorage.saved,
+          leadStorage,
+          message: leadStorage.saved
+            ? `Lead saved in Supabase. Email failed: ${resendError?.message ?? "Resend could not send this message."}`
+            : resendError?.message ?? "Resend could not send this message.",
           resendStatus: resendResponse.status,
         },
-        { status: 502 },
+        { status: leadStorage.saved ? 200 : 502 },
       );
     }
 
@@ -139,15 +198,20 @@ export async function POST(request: Request) {
       ok: true,
       recipient: deliveryEmail,
       mode: "resend",
+      leadSaved: leadStorage.saved,
+      leadStorage,
       message: "Project brief sent to CodeKraft inbox.",
     });
   }
 
   return Response.json({
-    ok: true,
+    ok: leadStorage.saved,
     recipient: deliveryEmail,
-    mode: "mailto-handoff",
-    message:
-      "Contact payload accepted. Add RESEND_API_KEY to send automatically from this route.",
+    mode: leadStorage.saved ? "supabase" : "not-configured",
+    leadSaved: leadStorage.saved,
+    leadStorage,
+    message: leadStorage.saved
+      ? "Lead saved in Supabase. Add RESEND_API_KEY to send email automatically too."
+      : "Lead storage is not configured. Add SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.",
   });
 }

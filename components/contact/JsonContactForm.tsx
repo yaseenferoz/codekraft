@@ -48,8 +48,8 @@ export function JsonContactForm() {
 
     const result = await response?.json().catch(() => null);
 
-    if (response?.ok && result?.mode === "resend") {
-      setStatus("sent to hello inbox");
+    if (response?.ok && (result?.mode === "resend" || result?.leadSaved)) {
+      setStatus(result?.mode === "resend" ? "saved + emailed" : "saved to leads");
       setForm(initialForm);
       return;
     }
