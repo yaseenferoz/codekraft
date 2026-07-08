@@ -1,8 +1,9 @@
 "use client";
 
+import { CodeKraftLogoMark } from "@/components/common/CodeKraftLogoMark";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Edges, Line } from "@react-three/drei";
-import { useMemo, useRef, useState } from "react";
+import { Component, type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import {
   AdditiveBlending,
   BackSide,
@@ -26,6 +27,53 @@ type TesseractHeroProps = {
     y: number;
   };
 };
+
+type WebGLBoundaryState = {
+  failed: boolean;
+};
+
+class WebGLBoundary extends Component<
+  { children: ReactNode; fallback: ReactNode },
+  WebGLBoundaryState
+> {
+  state = { failed: false };
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  componentDidCatch(error: unknown) {
+    console.warn("CodeKraft hero switched to the non-WebGL animation.", error);
+  }
+
+  render() {
+    if (this.state.failed) {
+      return this.props.fallback;
+    }
+
+    return this.props.children;
+  }
+}
+
+function browserSupportsWebGL() {
+  if (typeof document === "undefined") {
+    return false;
+  }
+
+  try {
+    const canvas = document.createElement("canvas");
+    const context =
+      canvas.getContext("webgl2", { failIfMajorPerformanceCaveat: true }) ??
+      canvas.getContext("webgl", { failIfMajorPerformanceCaveat: true }) ??
+      canvas.getContext("experimental-webgl");
+
+    return Boolean(context);
+  } catch {
+    return false;
+  }
+}
+
+const fallbackGlyphs = ["C", "K", "</>", "{}", "UI", "API", "K", "C", "</>", "01", "CK", "<K"];
 
 function seededValue(index: number, salt: number) {
   const value = Math.sin(index * 127.1 + salt * 311.7) * 43758.5453;
@@ -168,7 +216,7 @@ function CodeGlyphField({ hovered }: { hovered: boolean }) {
   const glyphs = useMemo(() => ["C", "K", "<", "/", ">", "{", "}"], []);
   const sprites = useMemo(
     () =>
-      Array.from({ length: 90 }, (_, index) => {
+      Array.from({ length: 56 }, (_, index) => {
         const canvas = document.createElement("canvas");
         const context = canvas.getContext("2d");
         canvas.width = 96;
@@ -192,8 +240,8 @@ function CodeGlyphField({ hovered }: { hovered: boolean }) {
           blending: AdditiveBlending,
           depthWrite: false,
         });
-        const angle = (index / 90) * Math.PI * 2;
-        const radius = 2.7 + seededValue(index, 1) * 1.9;
+        const angle = (index / 56) * Math.PI * 2;
+        const radius = 2.6 + seededValue(index, 1) * 1.65;
 
         return {
           angle,
@@ -229,6 +277,30 @@ function CodeGlyphField({ hovered }: { hovered: boolean }) {
         <sprite key={index} material={item.sprite} />
       ))}
     </group>
+  );
+}
+
+function TesseractFallback({ active = false }: Pick<TesseractHeroProps, "active">) {
+  return (
+    <div className={`ck-tesseract-fallback${active ? " is-active" : ""}`}>
+      <div className="ck-fallback-ring ck-fallback-ring-a" />
+      <div className="ck-fallback-ring ck-fallback-ring-b" />
+      <div className="ck-fallback-stream" aria-hidden="true">
+        {fallbackGlyphs.map((glyph, index) => (
+          <span key={`${glyph}-${index}`}>{glyph}</span>
+        ))}
+      </div>
+      <div className="ck-fallback-cube" aria-hidden="true">
+        <div className="ck-fallback-face ck-fallback-face-front">
+          <CodeKraftLogoMark />
+          <strong>CodeKraft</strong>
+        </div>
+        <div className="ck-fallback-face ck-fallback-face-back" />
+        <div className="ck-fallback-face ck-fallback-face-top" />
+        <div className="ck-fallback-face ck-fallback-face-side" />
+      </div>
+      <div className="ck-fallback-name">CODEKRAFT</div>
+    </div>
   );
 }
 
@@ -315,16 +387,33 @@ function TesseractObject({ active = false, drag = { x: 0, y: 0 } }: TesseractHer
 }
 
 export function TesseractHero({ active, drag }: TesseractHeroProps) {
+  const [webglReady, setWebglReady] = useState(false);
+  const fallback = <TesseractFallback active={active} />;
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      setWebglReady(browserSupportsWebGL());
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
+  if (!webglReady) {
+    return fallback;
+  }
+
   return (
-    <Canvas
-      dpr={[1, 1.35]}
-      camera={{ position: [0, 0, 7.4], fov: 40 }}
-      gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-    >
-      <ambientLight intensity={0.7} />
-      <pointLight position={[4, 5, 5]} intensity={42} color="#37C9FF" />
-      <pointLight position={[-5, -4, 4]} intensity={32} color="#8B5CFF" />
-      <TesseractObject active={active} drag={drag} />
-    </Canvas>
+    <WebGLBoundary fallback={fallback}>
+      <Canvas
+        dpr={[1, 1]}
+        camera={{ position: [0, 0, 7.4], fov: 40 }}
+        gl={{ antialias: false, alpha: true, powerPreference: "default" }}
+      >
+        <ambientLight intensity={0.7} />
+        <pointLight position={[4, 5, 5]} intensity={30} color="#37C9FF" />
+        <pointLight position={[-5, -4, 4]} intensity={24} color="#8B5CFF" />
+        <TesseractObject active={active} drag={drag} />
+      </Canvas>
+    </WebGLBoundary>
   );
 }

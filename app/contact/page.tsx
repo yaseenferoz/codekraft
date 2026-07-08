@@ -43,11 +43,11 @@ export default function ContactPage() {
       </section>
 
       <div className="ck-social-row" aria-label="Social links">
-        <Link href="https://github.com/" target="_blank" rel="noreferrer">
+        <Link href="https://github.com/yaseenferoz" target="_blank" rel="noreferrer">
           <Code2 size={18} />
           GitHub
         </Link>
-        <Link href="https://www.linkedin.com/" target="_blank" rel="noreferrer">
+        <Link href="https://www.linkedin.com/in/yaseen-feroz/" target="_blank" rel="noreferrer">
           <UsersRound size={18} />
           LinkedIn
         </Link>

@@ -25,6 +25,14 @@ const principles = [
   },
 ];
 
+const team = [
+  ["Yaseen Feroz", "Full Stack", "Product direction, engineering decisions, client delivery, and CodeKraft systems."],
+  ["Md Asadullah", "Marketing", "Outreach, client communication, lead generation, and brand growth."],
+  ["Nagraj Awanti", "Full Stack", "Development support, implementation, testing, and technical execution."],
+  ["Md Aejaz", "Technical Writer", "Website content, messaging clarity, page copy, and client communication material."],
+  ["Sharjeel Zeeshan", "UI/UX", "Interface design, user flows, visual systems, and product experience polish."],
+];
+
 export const metadata = {
   title: "About | CodeKraft",
   description: "Learn how CodeKraft designs and builds premium digital products, websites, and business systems.",
@@ -110,6 +118,27 @@ export default function AboutPage() {
               and innovation.
             </span>
           </article>
+        </div>
+      </section>
+
+      <section className="ck-team-section" aria-label="CodeKraft team">
+        <div className="ck-team-heading">
+          <p>&lt; studio.team /&gt;</p>
+          <h2>The people behind the modules.</h2>
+          <span>
+            CodeKraft works like a compact product cell: technical execution,
+            design, content, marketing, and delivery moving together.
+          </span>
+        </div>
+
+        <div className="ck-team-grid">
+          {team.map(([name, role, summary]) => (
+            <article key={name} className="ck-team-card">
+              <span>{role}</span>
+              <h3>{name}</h3>
+              <p>{summary}</p>
+            </article>
+          ))}
         </div>
       </section>
     </main>

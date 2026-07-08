@@ -1,7 +1,32 @@
-import { CheckCircle2, GitBranch, Rocket } from "lucide-react";
+import {
+  BrainCircuit,
+  CheckCircle2,
+  Cloud,
+  Database,
+  GitBranch,
+  MonitorSmartphone,
+  Rocket,
+  ServerCog,
+  ShieldCheck,
+  Smartphone,
+} from "lucide-react";
 import { CodeKraftLogoMark } from "@/components/common/CodeKraftLogoMark";
 import { Navbar } from "@/components/navigation/Navbar";
 import { processSteps } from "@/lib/site-modules";
+
+const inputs = ["Business goals", "Users & roles", "Existing data", "Content", "Budget & timeline"];
+
+const outputs = [
+  { icon: MonitorSmartphone, label: "Website UI", detail: "SEO pages, landing flows, CMS-ready sections" },
+  { icon: Smartphone, label: "Mobile App", detail: "Responsive web app or native-ready product flow" },
+  { icon: ServerCog, label: "Backend API", detail: "Auth, roles, workflows, payments, integrations" },
+  { icon: Database, label: "Database", detail: "Models, relations, storage, reporting structure" },
+  { icon: Cloud, label: "Cloud & DevOps", detail: "Deployment, domains, backups, monitoring" },
+  { icon: BrainCircuit, label: "AI Layer", detail: "Chatbots, automation, search, content assistance" },
+  { icon: ShieldCheck, label: "Security & QA", detail: "Validation, permissions, device testing, launch checks" },
+];
+
+const buildStack = ["Next.js", "React", "TypeScript", "Node/API", "PostgreSQL", "Cloud", "AI tools", "Analytics"];
 
 export const metadata = {
   title: "Process | CodeKraft",
@@ -23,42 +48,60 @@ export default function ProcessPage() {
 
       <section className="ck-flow-diagram" aria-label="Animated CodeKraft delivery flow">
         <div className="ck-flow-copy">
-          <p>Connect every moving part.</p>
+          <p>From business idea to complete digital system.</p>
           <span>
-            Strategy, design, development, launch, and support move through one
-            connected delivery system.
+            We do not only design screens. We connect content, interfaces,
+            databases, APIs, cloud deployment, AI assistance, QA, and support
+            into one clear build pipeline.
           </span>
         </div>
 
         <div className="ck-flow-map">
-          <div className="ck-flow-row is-top">
-            <span>Scope</span>
-            <span>Interface System</span>
-            <span>Build Queue</span>
-            <span>Launch Plan</span>
+          <div className="ck-flow-lane ck-flow-lane-input">
+            <small>01 input</small>
+            {inputs.map((item) => (
+              <span key={item}>{item}</span>
+            ))}
           </div>
 
-          <div className="ck-flow-side is-left">
-            <span>Client Brief</span>
-            <span>Existing Website</span>
-            <span>Business Workflow</span>
+          <div className="ck-flow-lane ck-flow-lane-plan">
+            <small>02 planning</small>
+            <span>Scope map</span>
+            <span>Feature priority</span>
+            <span>User journeys</span>
+            <span>Data model</span>
           </div>
 
           <div className="ck-flow-center">
             <span className="ck-flow-pulse" />
             <CodeKraftLogoMark />
             <strong>CodeKraft</strong>
+            <em>product engine</em>
           </div>
 
-          <div className="ck-flow-side is-right">
-            <span>Web App</span>
-            <span>CMS / Content</span>
-            <span>Analytics</span>
+          <div className="ck-flow-lane ck-flow-lane-output">
+            <small>03 system layers</small>
+            {outputs.map(({ icon: Icon, label, detail }) => (
+              <article key={label}>
+                <Icon size={18} />
+                <div>
+                  <strong>{label}</strong>
+                  <span>{detail}</span>
+                </div>
+              </article>
+            ))}
           </div>
 
-          <div className="ck-flow-row is-bottom">
+          <div className="ck-flow-lane ck-flow-lane-delivery">
+            <small>04 delivery</small>
             {processSteps.map((step) => (
               <span key={step.title}>{step.title}</span>
+            ))}
+          </div>
+
+          <div className="ck-flow-stack" aria-label="Technology stack">
+            {buildStack.map((item) => (
+              <span key={item}>{item}</span>
             ))}
           </div>
 

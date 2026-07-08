@@ -4,24 +4,24 @@ import { FormEvent, useMemo, useState } from "react";
 import { ArrowRight, Braces } from "lucide-react";
 
 const publicRecipient = "hello@codekraft.co.in";
-const deliveryRecipient = "codekraftgulbarga@gmail.com";
+
+const initialForm = {
+  name: "",
+  email: "",
+  phone: "",
+  service: "Website / Web App",
+  budget: "Let's discuss",
+  timeline: "Flexible",
+  message: "",
+};
 
 export function JsonContactForm() {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    service: "Website / Web App",
-    budget: "Let's discuss",
-    timeline: "Flexible",
-    message: "",
-  });
+  const [form, setForm] = useState(initialForm);
   const [status, setStatus] = useState("ready");
 
-  const payload = useMemo(
+  const previewPayload = useMemo(
     () => ({
       to: publicRecipient,
-      deliveryTo: deliveryRecipient,
       source: "codekraft.contact.module",
       project: {
         name: form.name || "Your Name",
@@ -43,23 +43,18 @@ export function JsonContactForm() {
     const response = await fetch("/api/contact", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(previewPayload),
     }).catch(() => undefined);
 
-    if (response?.ok) {
-      const result = await response.json().catch(() => null);
+    const result = await response?.json().catch(() => null);
 
-      if (result?.mode === "resend") {
-        setStatus("sent to inbox");
-        return;
-      }
+    if (response?.ok && result?.mode === "resend") {
+      setStatus("sent to hello inbox");
+      setForm(initialForm);
+      return;
     }
 
-    const subject = encodeURIComponent(`CodeKraft project enquiry from ${form.name || "Website visitor"}`);
-    const body = encodeURIComponent(JSON.stringify(payload.project, null, 2));
-
-    window.location.href = `mailto:${publicRecipient}?subject=${subject}&body=${body}`;
-    setStatus("mail client opened");
+    setStatus(result?.message ? `failed: ${result.message}` : "failed: check resend setup");
   }
 
   function update(key: keyof typeof form, value: string) {
@@ -123,7 +118,7 @@ export function JsonContactForm() {
           </span>
           <small>{status}</small>
         </div>
-        <pre>{JSON.stringify(payload, null, 2)}</pre>
+        <pre>{JSON.stringify(previewPayload, null, 2)}</pre>
         <button type="submit" className="ck-contact-send">
           send JSON brief
           <ArrowRight size={17} />

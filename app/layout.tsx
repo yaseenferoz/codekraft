@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { GlobalCodeParticles } from "@/components/common/GlobalCodeParticles";
 import { SiteChatbot } from "@/components/common/SiteChatbot";
 import { SiteFooter } from "@/components/footer/SiteFooter";
 import "./globals.css";
@@ -22,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased" suppressHydrationWarning>
       <body className="min-h-full" suppressHydrationWarning>
+        <GlobalCodeParticles />
         {children}
         <SiteFooter />
         <SiteChatbot />

@@ -46,7 +46,7 @@ export function Navbar() {
           onClick={() => setIsOpen((current) => !current)}
         >
           {isOpen ? <X size={18} /> : <Menu size={18} />}
-          <span>OS</span>
+          <span>CK</span>
         </button>
       </header>
       <div className={`ck-mobile-os ${isOpen ? "is-open" : ""}`} aria-hidden={!isOpen}>
@@ -75,7 +75,7 @@ export function Navbar() {
         </nav>
         <button type="button" className="ck-mobile-terminal" onClick={openAssistant}>
           <Terminal size={16} />
-          <span>open codekraft.ai</span>
+          <span>open ck.ai</span>
         </button>
       </div>
     </>
