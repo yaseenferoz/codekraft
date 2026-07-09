@@ -125,7 +125,7 @@ export function Navbar() {
             <input
               value={visitorName}
               onChange={(event) => setVisitorName(event.target.value)}
-              placeholder="Yaseen"
+              placeholder="Your name"
               autoComplete="name"
               autoFocus={isTalkOpen}
               required

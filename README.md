@@ -7,7 +7,7 @@ The design direction blends the sharpness of Apple, Linear, Stripe, Vercel, Figm
 ## Website Modules
 
 - Home: animated hero, CodeKraft tesseract visual, client rail, and featured work preview.
-- About: studio philosophy, operating principles, client proof, and team section.
+- About: studio philosophy, operating principles, delivery capabilities, and client proof.
 - Services: web development, web applications, e-commerce, ERP/business systems, UI/UX, and maintenance.
 - Work: real client portfolio modules with live project links.
 - Process: delivery architecture covering discovery, design, frontend, backend, database, cloud, AI, QA, deployment, and support.
@@ -84,7 +84,7 @@ If `GEMINI_API_KEY` is present, the route calls Gemini with CodeKraft website co
 
 The assistant is designed as a sales assistant, not only a FAQ bot. It can:
 
-- Answer questions about CodeKraft services, process, client work, team, AI, cloud, mobile, and contact details.
+- Answer questions about CodeKraft services, process, client work, studio capabilities, AI, cloud, mobile, and contact details.
 - Recommend a suitable solution lane based on visitor requirements.
 - Ask for missing lead details such as name, phone, email, budget, timeline, and project requirements.
 - Save chatbot leads in Supabase with the full conversation transcript.
@@ -121,14 +121,6 @@ TELEGRAM_CHAT_ID=8740133934
 ```
 
 The bot username is `@codekraft_leads_bot`, but Telegram API calls require the bot token from BotFather.
-
-## Team
-
-- Yaseen Feroz: Full Stack
-- Md Asadullah: Marketing
-- Nagraj Awanti: Full Stack
-- Md Aejaz: Technical Writer
-- Sharjeel Zeeshan: UI/UX
 
 ## Client Work
 

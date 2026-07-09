@@ -25,14 +25,6 @@ const principles = [
   },
 ];
 
-const team = [
-  ["Yaseen Feroz", "Full Stack", "Product direction, engineering decisions, client delivery, and CodeKraft systems."],
-  ["Md Asadullah", "Marketing", "Outreach, client communication, lead generation, and brand growth."],
-  ["Nagraj Awanti", "Full Stack", "Development support, implementation, testing, and technical execution."],
-  ["Md Aejaz", "Technical Writer", "Website content, messaging clarity, page copy, and client communication material."],
-  ["Sharjeel Zeeshan", "UI/UX", "Interface design, user flows, visual systems, and product experience polish."],
-];
-
 export const metadata = {
   title: "About | CodeKraft",
   description: "Learn how CodeKraft designs and builds premium digital products, websites, and business systems.",
@@ -121,21 +113,27 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="ck-team-section" aria-label="CodeKraft team">
+      <section className="ck-team-section" aria-label="CodeKraft delivery capabilities">
         <div className="ck-team-heading">
-          <p>&lt; studio.team /&gt;</p>
-          <h2>The people behind the modules.</h2>
+          <p>&lt; studio.cell /&gt;</p>
+          <h2>A compact product cell for serious digital work.</h2>
           <span>
-            CodeKraft works like a compact product cell: technical execution,
-            design, content, marketing, and delivery moving together.
+            CodeKraft combines strategy, interface design, engineering,
+            content clarity, launch support, and growth thinking in one focused
+            delivery system.
           </span>
         </div>
 
         <div className="ck-team-grid">
-          {team.map(([name, role, summary]) => (
-            <article key={name} className="ck-team-card">
-              <span>{role}</span>
-              <h3>{name}</h3>
+          {[
+            ["Strategy", "Scope, goals, workflows, and launch priorities before design starts."],
+            ["Design", "Interface systems, responsive layouts, content rhythm, and interaction polish."],
+            ["Engineering", "Frontend, backend, data contracts, integrations, deployment, and QA."],
+            ["Growth", "Maintenance, iteration, performance checks, analytics, and improvements after launch."],
+          ].map(([title, summary]) => (
+            <article key={title} className="ck-team-card">
+              <span>capability</span>
+              <h3>{title}</h3>
               <p>{summary}</p>
             </article>
           ))}
