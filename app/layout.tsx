@@ -5,9 +5,29 @@ import { SiteFooter } from "@/components/footer/SiteFooter";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "CodeKraft | Crafting Digital Experiences",
+  metadataBase: new URL("https://www.codekraft.co.in"),
+  title: "CodeKraft | Website & Web App Development in India",
   description:
-    "CodeKraft builds modern websites, web apps, e-commerce systems, ERP tools, and digital product experiences.",
+    "CodeKraft builds websites, web applications, ecommerce platforms, ERP systems, and beautiful digital products.",
+  alternates: {
+    canonical: "https://www.codekraft.co.in",
+  },
+  openGraph: {
+    title: "CodeKraft | Crafting Digital Experiences",
+    description: "Websites, web apps, ecommerce and ERP solutions.",
+    url: "https://www.codekraft.co.in",
+    siteName: "CodeKraft",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CodeKraft | Crafting Digital Experiences",
+    description: "Websites, web apps, ecommerce and ERP solutions.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export const viewport: Viewport = {

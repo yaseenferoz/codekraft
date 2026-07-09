@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useMemo, useState } from "react";
-import { ArrowRight, Braces } from "lucide-react";
+import { ArrowRight, Braces, Check, LoaderCircle, RotateCcw } from "lucide-react";
 
 const publicRecipient = "hello@codekraft.co.in";
 
@@ -15,9 +15,11 @@ const initialForm = {
   message: "",
 };
 
+type SubmitState = "idle" | "sending" | "sent" | "failed";
+
 export function JsonContactForm() {
   const [form, setForm] = useState(initialForm);
-  const [status, setStatus] = useState("ready");
+  const [submitState, setSubmitState] = useState<SubmitState>("idle");
 
   const previewPayload = useMemo(
     () => ({
@@ -38,7 +40,7 @@ export function JsonContactForm() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setStatus("transmitting");
+    setSubmitState("sending");
 
     const response = await fetch("/api/contact", {
       method: "POST",
@@ -49,16 +51,62 @@ export function JsonContactForm() {
     const result = await response?.json().catch(() => null);
 
     if (response?.ok && (result?.mode === "resend" || result?.leadSaved)) {
-      setStatus(result?.mode === "resend" ? "saved + emailed" : "saved to leads");
+      setSubmitState("sent");
       setForm(initialForm);
       return;
     }
 
-    setStatus(result?.message ? `failed: ${result.message}` : "failed: check resend setup");
+    setSubmitState("failed");
   }
 
   function update(key: keyof typeof form, value: string) {
     setForm((current) => ({ ...current, [key]: value }));
+    if (submitState === "failed") {
+      setSubmitState("idle");
+    }
+  }
+
+  function getButtonContent() {
+    if (submitState === "sending") {
+      return (
+        <>
+          sending brief
+          <LoaderCircle size={17} className="ck-spin" />
+        </>
+      );
+    }
+
+    if (submitState === "failed") {
+      return (
+        <>
+          failed - try again
+          <RotateCcw size={17} />
+        </>
+      );
+    }
+
+    return (
+      <>
+        send JSON brief
+        <ArrowRight size={17} />
+      </>
+    );
+  }
+
+  if (submitState === "sent") {
+    return (
+      <section className="ck-json-success" aria-live="polite">
+        <span>
+          <Check size={19} />
+        </span>
+        <p>&lt; brief.sent /&gt;</p>
+        <h2>Project brief delivered.</h2>
+        <small>
+          CodeKraft received your details. This contact module will stay closed
+          until the page is refreshed.
+        </small>
+      </section>
+    );
   }
 
   return (
@@ -116,12 +164,16 @@ export function JsonContactForm() {
             <Braces size={16} />
             project-brief.json
           </span>
-          <small>{status}</small>
+          <small>contact.module</small>
         </div>
         <pre>{JSON.stringify(previewPayload, null, 2)}</pre>
-        <button type="submit" className="ck-contact-send">
-          send JSON brief
-          <ArrowRight size={17} />
+        <button
+          type="submit"
+          className={`ck-contact-send is-${submitState}`}
+          disabled={submitState === "sending"}
+          aria-live="polite"
+        >
+          {getButtonContent()}
         </button>
       </div>
     </form>

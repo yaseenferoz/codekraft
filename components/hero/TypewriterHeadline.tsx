@@ -33,22 +33,25 @@ export function TypewriterHeadline() {
   );
 
   return (
-    <h1 className="ck-hero-heading" aria-label="We don't just code. We craft digital experiences.">
-      {characters.map(({ character, highlight, key }) => {
-        if (character === "\n") {
-          return <br key={key} />;
-        }
+    <h1 className="ck-hero-heading">
+      <span className="ck-visually-hidden">We craft digital experiences</span>
+      <span aria-hidden="true">
+        {characters.map(({ character, highlight, key }) => {
+          if (character === "\n") {
+            return <br key={key} />;
+          }
 
-        return (
-          <span
-            key={key}
-            className={highlight ? "ck-word-accent" : "ck-word-normal"}
-          >
-            {character}
-          </span>
-        );
-      })}
-      <span className="ck-type-cursor" aria-hidden="true" />
+          return (
+            <span
+              key={key}
+              className={highlight ? "ck-word-accent" : "ck-word-normal"}
+            >
+              {character}
+            </span>
+          );
+        })}
+        <span className="ck-type-cursor" aria-hidden="true" />
+      </span>
     </h1>
   );
 }

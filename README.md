@@ -51,6 +51,8 @@ RESEND_FROM_EMAIL=CodeKraft <hello@codekraft.co.in>
 RESEND_DELIVERY_EMAIL=hello@codekraft.co.in
 SUPABASE_URL=
 SUPABASE_SERVICE_ROLE_KEY=
+TELEGRAM_BOT_TOKEN=
+TELEGRAM_CHAT_ID=8740133934
 ```
 
 Important: `hello@codekraft.co.in` must be verified in Resend before production sending from that address.
@@ -70,7 +72,7 @@ create table leads (
 );
 ```
 
-## CodeKraft AI Assistant
+## CodeKraft AI Sales Assistant
 
 The chatbot uses:
 
@@ -79,6 +81,15 @@ POST /api/chat
 ```
 
 If `GEMINI_API_KEY` is present, the route calls Gemini with CodeKraft website context only. OpenAI remains optional as a secondary provider. If no AI key is configured, it falls back to the local rule-based answer engine.
+
+The assistant is designed as a sales assistant, not only a FAQ bot. It can:
+
+- Answer questions about CodeKraft services, process, client work, team, AI, cloud, mobile, and contact details.
+- Recommend a suitable solution lane based on visitor requirements.
+- Ask for missing lead details such as name, phone, email, budget, timeline, and project requirements.
+- Save chatbot leads in Supabase with the full conversation transcript.
+- Email the complete chatbot conversation to the CodeKraft inbox through Resend.
+- Send instant Telegram lead alerts when Telegram bot credentials are configured.
 
 Recommended AI environment variables:
 
@@ -94,13 +105,22 @@ OPENAI_API_KEY=
 OPENAI_MODEL=gpt-4.1-mini
 ```
 
-The assistant is constrained to CodeKraft services, process, client work, team, contact details, AI/cloud/mobile/backend capabilities, and project planning.
-
-When a chatbot message includes an email or phone number, `/api/chat` stores it as a Supabase lead with:
+When a chatbot conversation includes project intent, `/api/chat` stores it as a Supabase lead with:
 
 ```txt
 source=chatbot
 ```
+
+Budget and requirements are stored inside the lead `message` field with the conversation transcript, because the current Supabase `leads` table intentionally stays compact.
+
+Telegram lead alerts use:
+
+```txt
+TELEGRAM_BOT_TOKEN=
+TELEGRAM_CHAT_ID=8740133934
+```
+
+The bot username is `@codekraft_leads_bot`, but Telegram API calls require the bot token from BotFather.
 
 ## Team
 

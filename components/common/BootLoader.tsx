@@ -24,7 +24,7 @@ export function BootLoader() {
         <span className="ck-boot-ring" />
       </div>
       <div className="ck-boot-copy">
-        <strong>CodeKraft OS</strong>
+        <strong>CodeKraft</strong>
         <span>initializing home.module</span>
       </div>
       <div className="ck-boot-progress" />

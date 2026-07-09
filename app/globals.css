@@ -45,6 +45,16 @@ body {
   font-family: var(--font-body);
 }
 
+.ck-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .ck-global-particles {
   position: fixed;
   inset: 0;
@@ -124,6 +134,7 @@ textarea {
   z-index: 50;
   display: grid;
   place-items: center;
+  pointer-events: none;
   background:
     radial-gradient(circle at 50% 44%, rgba(55, 201, 255, 0.16), transparent 28%),
     radial-gradient(circle at 50% 58%, rgba(139, 92, 255, 0.12), transparent 34%),
@@ -401,6 +412,116 @@ textarea {
   box-shadow: 0 0 18px var(--ck-glow-cyan);
 }
 
+.ck-whatsapp-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ck-whatsapp-dialog.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.ck-whatsapp-backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(5, 8, 22, 0.74);
+  backdrop-filter: blur(14px);
+}
+
+.ck-whatsapp-card {
+  position: relative;
+  display: grid;
+  width: min(26rem, 100%);
+  gap: 1rem;
+  border: 1px solid rgba(55, 201, 255, 0.28);
+  border-radius: 0.95rem;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(55, 201, 255, 0.18), transparent 34%),
+    linear-gradient(145deg, rgba(55, 201, 255, 0.08), transparent 45%),
+    rgba(7, 11, 24, 0.94);
+  padding: 1rem;
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.42);
+  transform: translateY(0.85rem) scale(0.97);
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ck-whatsapp-dialog.is-open .ck-whatsapp-card {
+  transform: translateY(0) scale(1);
+}
+
+.ck-whatsapp-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--ck-cyan);
+  font-family: var(--font-code);
+}
+
+.ck-whatsapp-top span,
+.ck-whatsapp-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.ck-whatsapp-top button {
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  place-items: center;
+  border: 1px solid rgba(111, 140, 255, 0.22);
+  border-radius: 0.55rem;
+  background: rgba(5, 8, 22, 0.72);
+  color: var(--ck-text);
+}
+
+.ck-whatsapp-card label {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.ck-whatsapp-card label span {
+  color: var(--ck-text-soft);
+  font-family: var(--font-code);
+  font-size: 0.78rem;
+}
+
+.ck-whatsapp-card input {
+  border: 1px solid rgba(111, 140, 255, 0.24);
+  border-radius: 0.65rem;
+  background: rgba(5, 8, 22, 0.76);
+  color: var(--ck-text);
+  padding: 0.9rem;
+  outline: none;
+}
+
+.ck-whatsapp-card input:focus {
+  border-color: rgba(55, 201, 255, 0.5);
+  box-shadow: 0 0 0 3px rgba(55, 201, 255, 0.08);
+}
+
+.ck-whatsapp-submit {
+  justify-content: center;
+  border: 1px solid rgba(55, 201, 255, 0.34);
+  border-radius: 0.65rem;
+  background: rgba(55, 201, 255, 0.1);
+  color: var(--ck-cyan);
+  padding: 0.9rem 1rem;
+  font-family: var(--font-code);
+}
+
 .ck-mobile-nav-trigger {
   display: none;
   align-items: center;
@@ -420,7 +541,7 @@ textarea {
 .ck-mobile-os {
   position: fixed;
   inset: 0;
-  z-index: 40;
+  z-index: 65;
   display: none;
   padding: 1.15rem;
   background:
@@ -430,16 +551,23 @@ textarea {
   backdrop-filter: blur(18px);
   opacity: 0;
   pointer-events: none;
+  visibility: hidden;
   transform: translateY(-1rem) scale(0.98);
   transition:
     opacity 240ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0ms linear 240ms;
 }
 
 .ck-mobile-os.is-open {
   opacity: 1;
   pointer-events: auto;
+  visibility: visible;
   transform: translateY(0) scale(1);
+  transition:
+    opacity 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0ms;
 }
 
 .ck-mobile-os::before {
@@ -492,6 +620,9 @@ textarea {
 }
 
 .ck-mobile-module {
+  position: relative;
+  z-index: 2;
+  display: grid;
   min-height: 8.25rem;
   border: 1px solid rgba(111, 140, 255, 0.22);
   border-radius: 0.8rem;
@@ -500,6 +631,8 @@ textarea {
     rgba(7, 11, 24, 0.72);
   padding: 1rem;
   font-family: var(--font-code);
+  touch-action: manipulation;
+  cursor: pointer;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.025);
 }
 
@@ -2200,12 +2333,91 @@ textarea {
 .ck-contact-send {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.55rem;
   border: 1px solid rgba(55, 201, 255, 0.26);
   border-radius: 0.6rem;
   padding: 0.85rem 1rem;
   background: rgba(55, 201, 255, 0.08);
   font-family: var(--font-code);
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    color 180ms ease,
+    opacity 180ms ease;
+}
+
+.ck-contact-send:disabled {
+  cursor: wait;
+  opacity: 0.8;
+}
+
+.ck-contact-send.is-sending {
+  border-color: rgba(55, 201, 255, 0.5);
+  background: rgba(55, 201, 255, 0.14);
+}
+
+.ck-contact-send.is-failed {
+  border-color: rgba(255, 98, 119, 0.48);
+  background: rgba(255, 98, 119, 0.12);
+  color: #ff8796;
+}
+
+.ck-spin {
+  animation: ck-spin 780ms linear infinite;
+}
+
+@keyframes ck-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ck-json-success {
+  display: grid;
+  min-height: 26rem;
+  place-items: center;
+  align-content: center;
+  gap: 0.75rem;
+  border: 1px solid rgba(55, 201, 255, 0.28);
+  border-radius: 0.9rem;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(55, 201, 255, 0.18), transparent 38%),
+    linear-gradient(145deg, rgba(55, 201, 255, 0.08), transparent 42%),
+    rgba(7, 11, 24, 0.72);
+  padding: 2rem;
+  text-align: center;
+}
+
+.ck-json-success span {
+  display: grid;
+  width: 3.35rem;
+  height: 3.35rem;
+  place-items: center;
+  border: 1px solid rgba(55, 201, 255, 0.42);
+  border-radius: 999px;
+  color: var(--ck-cyan);
+  box-shadow: 0 0 34px rgba(55, 201, 255, 0.18);
+}
+
+.ck-json-success p {
+  margin: 0;
+  color: var(--ck-cyan);
+  font-family: var(--font-code);
+  font-size: 0.78rem;
+}
+
+.ck-json-success h2 {
+  margin: 0;
+  color: var(--ck-text);
+  font-family: var(--font-code);
+  font-size: clamp(1.45rem, 3vw, 2.2rem);
+}
+
+.ck-json-success small {
+  max-width: 30rem;
+  color: var(--ck-text-soft);
+  line-height: 1.7;
 }
 
 .ck-social-row {

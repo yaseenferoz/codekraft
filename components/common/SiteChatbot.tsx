@@ -12,12 +12,12 @@ export function SiteChatbot() {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: "assistant",
-      text: "CodeKraft assistant online. Ask about services, process, client work, or how to contact us.",
+      text: "CodeKraft AI online. Tell me what you want to build and I can suggest a solution, capture your brief, and help the team follow up.",
     },
   ]);
 
   const suggestedQuestions = useMemo(
-    () => ["What services do you offer?", "What is your process?", "Show client work", "How can I contact CodeKraft?"],
+    () => ["I need a website", "Estimate my project", "What should I build?", "Talk to CodeKraft"],
     [],
   );
 
@@ -130,7 +130,7 @@ export function SiteChatbot() {
           <input
             value={input}
             onChange={(event) => setInput(event.target.value)}
-            placeholder="Ask from this website only..."
+            placeholder="Describe your project, budget, or question..."
             aria-label="Ask CodeKraft assistant"
           />
           <button type="submit" aria-label="Send message">

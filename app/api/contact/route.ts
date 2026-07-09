@@ -15,6 +15,13 @@ type LeadSaveResult = {
   status?: number;
 };
 
+type TelegramSendResult = {
+  sent: boolean;
+  configured: boolean;
+  message?: string;
+  status?: number;
+};
+
 function escapeHtml(value: unknown) {
   return String(value ?? "")
     .replaceAll("&", "&amp;")
@@ -38,6 +45,24 @@ function buildPlainTextEmail(project: ContactProject) {
     "Message:",
     project.message,
   ].join("\n");
+}
+
+function buildTelegramLeadMessage(project: ContactProject) {
+  const message = [
+    "New CodeKraft contact lead",
+    "",
+    `Name: ${project.name}`,
+    `Email: ${project.email}`,
+    `Phone: ${project.phone || "Not provided"}`,
+    `Service: ${project.service || "Not selected"}`,
+    `Budget: ${project.budget || "Not selected"}`,
+    `Timeline: ${project.timeline || "Not selected"}`,
+    "",
+    "Message:",
+    project.message,
+  ].join("\n");
+
+  return message.length > 3900 ? `${message.slice(0, 3900)}\n\n...trimmed for Telegram` : message;
 }
 
 function buildHtmlEmail(project: ContactProject) {
@@ -143,6 +168,47 @@ async function saveLead(project: ContactProject, source: string): Promise<LeadSa
   };
 }
 
+async function sendTelegramLead(project: ContactProject): Promise<TelegramSendResult> {
+  const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
+  const telegramChatId = process.env.TELEGRAM_CHAT_ID;
+
+  if (!telegramBotToken || !telegramChatId) {
+    return {
+      sent: false,
+      configured: false,
+      message: "Telegram lead alerts are not configured.",
+    };
+  }
+
+  const response = await fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      chat_id: telegramChatId,
+      text: buildTelegramLeadMessage(project),
+      disable_web_page_preview: true,
+    }),
+  }).catch(() => null);
+
+  if (!response?.ok) {
+    const error = await response?.json().catch(() => null);
+
+    return {
+      sent: false,
+      configured: true,
+      message: error?.description ?? "Telegram could not send this lead.",
+      status: response?.status,
+    };
+  }
+
+  return {
+    sent: true,
+    configured: true,
+  };
+}
+
 export async function POST(request: Request) {
   const payload = await request.json().catch(() => null);
 
@@ -158,6 +224,7 @@ export async function POST(request: Request) {
   const deliveryEmail = process.env.RESEND_DELIVERY_EMAIL ?? "hello@codekraft.co.in";
   const project = payload.project as ContactProject;
   const leadStorage = await saveLead(project, payload.source ?? "contact-form");
+  const telegramLead = await sendTelegramLead(project);
 
   if (resendApiKey) {
     const resendResponse = await fetch("https://api.resend.com/emails", {
@@ -184,7 +251,9 @@ export async function POST(request: Request) {
           ok: leadStorage.saved,
           mode: leadStorage.saved ? "supabase-only" : "resend-error",
           leadSaved: leadStorage.saved,
+          leadTelegramSent: telegramLead.sent,
           leadStorage,
+          telegramLead,
           message: leadStorage.saved
             ? `Lead saved in Supabase. Email failed: ${resendError?.message ?? "Resend could not send this message."}`
             : resendError?.message ?? "Resend could not send this message.",
@@ -199,7 +268,9 @@ export async function POST(request: Request) {
       recipient: deliveryEmail,
       mode: "resend",
       leadSaved: leadStorage.saved,
+      leadTelegramSent: telegramLead.sent,
       leadStorage,
+      telegramLead,
       message: "Project brief sent to CodeKraft inbox.",
     });
   }
@@ -209,7 +280,9 @@ export async function POST(request: Request) {
     recipient: deliveryEmail,
     mode: leadStorage.saved ? "supabase" : "not-configured",
     leadSaved: leadStorage.saved,
+    leadTelegramSent: telegramLead.sent,
     leadStorage,
+    telegramLead,
     message: leadStorage.saved
       ? "Lead saved in Supabase. Add RESEND_API_KEY to send email automatically too."
       : "Lead storage is not configured. Add SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.",

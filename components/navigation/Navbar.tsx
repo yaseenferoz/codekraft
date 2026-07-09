@@ -2,18 +2,37 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, Power, Terminal, X } from "lucide-react";
-import { useState } from "react";
+import { MessageCircle, Menu, Power, Terminal, X } from "lucide-react";
+import { FormEvent, useState } from "react";
 import { BrandMark } from "@/components/common/BrandMark";
 import { siteModules } from "@/lib/site-modules";
 
+const whatsappNumber = "918073049854";
+
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isTalkOpen, setIsTalkOpen] = useState(false);
+  const [visitorName, setVisitorName] = useState("");
   const pathname = usePathname();
 
   function openAssistant() {
     setIsOpen(false);
     window.dispatchEvent(new Event("ck:open-chat"));
+  }
+
+  function openTalkForm() {
+    setIsOpen(false);
+    setIsTalkOpen(true);
+  }
+
+  function startWhatsappConversation(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const name = visitorName.trim() || "there";
+    const message = `Hi CodeKraft, my name is ${name}. I want to discuss a project.`;
+    window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+    setVisitorName("");
+    setIsTalkOpen(false);
   }
 
   return (
@@ -34,7 +53,7 @@ export function Navbar() {
               </Link>
           ))}
         </nav>
-        <button type="button" className="ck-talk-button" onClick={openAssistant}>
+        <button type="button" className="ck-talk-button" onClick={openTalkForm}>
           let&apos;s talk_
           <span />
         </button>
@@ -65,7 +84,7 @@ export function Navbar() {
                 key={item.key}
                 href={item.path}
                 className={`ck-mobile-module ${pathname === item.path ? "is-active" : ""}`}
-                onClick={() => setIsOpen(false)}
+                onPointerUp={() => setIsOpen(false)}
               >
                 <span>0{index + 1}</span>
                 <strong>{item.label}.tsx</strong>
@@ -77,6 +96,40 @@ export function Navbar() {
           <Terminal size={16} />
           <span>open ck.ai</span>
         </button>
+      </div>
+      <div className={`ck-whatsapp-dialog ${isTalkOpen ? "is-open" : ""}`} aria-hidden={!isTalkOpen}>
+        <button
+          type="button"
+          className="ck-whatsapp-backdrop"
+          aria-label="Close WhatsApp form"
+          onClick={() => setIsTalkOpen(false)}
+        />
+        <form className="ck-whatsapp-card" onSubmit={startWhatsappConversation}>
+          <div className="ck-whatsapp-top">
+            <span>
+              <MessageCircle size={17} />
+              whatsapp.start
+            </span>
+            <button type="button" aria-label="Close WhatsApp form" onClick={() => setIsTalkOpen(false)}>
+              <X size={17} />
+            </button>
+          </div>
+          <label>
+            <span>your name</span>
+            <input
+              value={visitorName}
+              onChange={(event) => setVisitorName(event.target.value)}
+              placeholder="Yaseen"
+              autoComplete="name"
+              autoFocus={isTalkOpen}
+              required
+            />
+          </label>
+          <button type="submit" className="ck-whatsapp-submit">
+            start conversation
+            <MessageCircle size={17} />
+          </button>
+        </form>
       </div>
     </>
   );
