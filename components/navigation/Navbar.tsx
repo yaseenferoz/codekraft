@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { MessageCircle, Menu, Power, Terminal, X } from "lucide-react";
 import { FormEvent, useState } from "react";
 import { BrandMark } from "@/components/common/BrandMark";
@@ -14,6 +14,7 @@ export function Navbar() {
   const [isTalkOpen, setIsTalkOpen] = useState(false);
   const [visitorName, setVisitorName] = useState("");
   const pathname = usePathname();
+  const router = useRouter();
 
   function openAssistant() {
     setIsOpen(false);
@@ -23,6 +24,11 @@ export function Navbar() {
   function openTalkForm() {
     setIsOpen(false);
     setIsTalkOpen(true);
+  }
+
+  function navigateMobile(path: string) {
+    setIsOpen(false);
+    router.push(path);
   }
 
   function startWhatsappConversation(event: FormEvent<HTMLFormElement>) {
@@ -80,16 +86,16 @@ export function Navbar() {
         </div>
         <nav className="ck-mobile-os-grid" aria-label="Mobile navigation">
           {siteModules.map((item, index) => (
-              <Link
+              <button
+                type="button"
                 key={item.key}
-                href={item.path}
                 className={`ck-mobile-module ${pathname === item.path ? "is-active" : ""}`}
-                onPointerUp={() => setIsOpen(false)}
+                onClick={() => navigateMobile(item.path)}
               >
                 <span>0{index + 1}</span>
                 <strong>{item.label}.tsx</strong>
                 <small>{pathname === item.path ? "active module" : "open module"}</small>
-              </Link>
+              </button>
           ))}
         </nav>
         <button type="button" className="ck-mobile-terminal" onClick={openAssistant}>

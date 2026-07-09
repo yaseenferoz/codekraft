@@ -623,13 +623,16 @@ textarea {
   position: relative;
   z-index: 2;
   display: grid;
+  width: 100%;
   min-height: 8.25rem;
   border: 1px solid rgba(111, 140, 255, 0.22);
   border-radius: 0.8rem;
   background:
     linear-gradient(135deg, rgba(55, 201, 255, 0.09), transparent 38%),
     rgba(7, 11, 24, 0.72);
+  color: var(--ck-text);
   padding: 1rem;
+  text-align: left;
   font-family: var(--font-code);
   touch-action: manipulation;
   cursor: pointer;
