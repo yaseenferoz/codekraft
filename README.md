@@ -135,6 +135,7 @@ Current client modules include:
 - Qaser Al Talah
 - Vibrant Ritchie
 - Ceyone Society
+- Make My Project
 
 ## Social Links
 

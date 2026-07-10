@@ -82,4 +82,13 @@ export const clientProjects: ClientProject[] = [
     services: ["Website", "CMS Structure", "Information Design"],
     accent: "blue",
   },
+  {
+    name: "Make My Project",
+    url: "https://makemyproject.co.in/",
+    category: "web",
+    year: "2026",
+    summary: "A project-focused web platform built around discovery, clarity, and student-friendly enquiry paths.",
+    services: ["Website", "Lead Flow", "Responsive UI"],
+    accent: "cyan",
+  },
 ];

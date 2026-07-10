@@ -32,7 +32,7 @@ export const metadata = {
 
 export default function AboutPage() {
   const stats = [
-    ["9", "client modules"],
+    [String(clientProjects.length), "client modules"],
     ["6", "service lanes"],
     ["5", "delivery phases"],
     ["24/7", "digital mindset"],

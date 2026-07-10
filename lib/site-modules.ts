@@ -109,6 +109,6 @@ export const siteKnowledge = [
   "CodeKraft's public contact email is hello@codekraft.co.in and phone number is +91 80730 49854.",
   "CodeKraft uses a design direction inspired by premium product systems: Apple, Linear, Stripe, Vercel, Figma, and VS Code.",
   "The CodeKraft process is Discover, Design, Develop, Deploy, and Support.",
-  "CodeKraft client projects include GM Aerotech, Vril Innovation, NDRF, MA Quality Products, Ayasya Yoga, Hotel Ashokavana, Qaser Al Talah, Vibrant Ritchie, and Ceyone Society.",
+  "CodeKraft client projects include GM Aerotech, Vril Innovation, NDRF, MA Quality Products, Ayasya Yoga, Hotel Ashokavana, Qaser Al Talah, Vibrant Ritchie, Ceyone Society, and Make My Project.",
   "The website is built as module-style navigation: home, about, services, work, process, and contact.",
 ];
