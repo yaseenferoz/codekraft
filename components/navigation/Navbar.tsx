@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { MessageCircle, Menu, Power, Terminal, X } from "lucide-react";
+import { MessageCircle, Menu, X } from "lucide-react";
 import { FormEvent, useState } from "react";
 import { BrandMark } from "@/components/common/BrandMark";
 import { siteModules } from "@/lib/site-modules";
@@ -16,19 +16,26 @@ export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
 
-  function openAssistant() {
-    setIsOpen(false);
-    window.dispatchEvent(new Event("ck:open-chat"));
-  }
-
   function openTalkForm() {
     setIsOpen(false);
     setIsTalkOpen(true);
   }
 
+  function closeTalkForm() {
+    setIsTalkOpen(false);
+  }
+
   function navigateMobile(path: string) {
     setIsOpen(false);
     router.push(path);
+  }
+
+  function isActivePath(path: string) {
+    if (path === "/") {
+      return pathname === "/";
+    }
+
+    return pathname === path || pathname.startsWith(`${path}/`);
   }
 
   function startWhatsappConversation(event: FormEvent<HTMLFormElement>) {
@@ -53,7 +60,7 @@ export function Navbar() {
               <Link
                 key={item.key}
                 href={item.path}
-                className={`ck-nav-link ${pathname === item.path ? "is-active" : ""}`}
+                className={`ck-nav-link ${isActivePath(item.path) ? "is-active" : ""}`}
               >
                 &lt;{item.label}&gt;
               </Link>
@@ -66,7 +73,7 @@ export function Navbar() {
         <button
           type="button"
           className="ck-mobile-nav-trigger"
-          aria-label={isOpen ? "Close CodeKraft OS menu" : "Open CodeKraft OS menu"}
+          aria-label={isOpen ? "Close CodeKraft menu" : "Open CodeKraft menu"}
           aria-expanded={isOpen}
           onClick={() => setIsOpen((current) => !current)}
         >
@@ -76,31 +83,30 @@ export function Navbar() {
       </header>
       <div className={`ck-mobile-os ${isOpen ? "is-open" : ""}`} aria-hidden={!isOpen}>
         <div className="ck-mobile-os-top">
-          <span>
-            <Power size={14} />
-            codekraft.os
-          </span>
-          <button type="button" aria-label="Close mobile navigation" onClick={() => setIsOpen(false)}>
-            <X size={18} />
-          </button>
+          <div className="ck-mobile-os-brand">
+            <BrandMark />
+          </div>
+            <button type="button" aria-label="Close mobile navigation" onClick={() => setIsOpen(false)}>
+              <X size={18} />
+            </button>
         </div>
         <nav className="ck-mobile-os-grid" aria-label="Mobile navigation">
           {siteModules.map((item, index) => (
               <button
                 type="button"
                 key={item.key}
-                className={`ck-mobile-module ${pathname === item.path ? "is-active" : ""}`}
+                className={`ck-mobile-module ${isActivePath(item.path) ? "is-active" : ""}`}
                 onClick={() => navigateMobile(item.path)}
               >
                 <span>0{index + 1}</span>
                 <strong>{item.label}.tsx</strong>
-                <small>{pathname === item.path ? "active module" : "open module"}</small>
+                <small>{isActivePath(item.path) ? "active module" : "open module"}</small>
               </button>
           ))}
         </nav>
-        <button type="button" className="ck-mobile-terminal" onClick={openAssistant}>
-          <Terminal size={16} />
-          <span>open ck.ai</span>
+        <button type="button" className="ck-mobile-connect" onClick={openTalkForm}>
+          <MessageCircle size={17} />
+          <span>let&apos;s connect</span>
         </button>
       </div>
       <div className={`ck-whatsapp-dialog ${isTalkOpen ? "is-open" : ""}`} aria-hidden={!isTalkOpen}>
@@ -108,7 +114,7 @@ export function Navbar() {
           type="button"
           className="ck-whatsapp-backdrop"
           aria-label="Close WhatsApp form"
-          onClick={() => setIsTalkOpen(false)}
+          onClick={closeTalkForm}
         />
         <form className="ck-whatsapp-card" onSubmit={startWhatsappConversation}>
           <div className="ck-whatsapp-top">
@@ -116,7 +122,7 @@ export function Navbar() {
               <MessageCircle size={17} />
               whatsapp.start
             </span>
-            <button type="button" aria-label="Close WhatsApp form" onClick={() => setIsTalkOpen(false)}>
+            <button type="button" aria-label="Close WhatsApp form" onClick={closeTalkForm}>
               <X size={17} />
             </button>
           </div>

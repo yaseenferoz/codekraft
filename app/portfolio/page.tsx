@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowLeft, ExternalLink, FolderKanban } from "lucide-react";
+import { ExternalLink, FolderKanban } from "lucide-react";
+import { ModuleAmbientScene } from "@/components/common/ModuleAmbientScene";
 import { Navbar } from "@/components/navigation/Navbar";
 import { clientProjects } from "@/lib/client-projects";
 
@@ -13,12 +14,9 @@ export const metadata = {
 export default function PortfolioPage() {
   return (
     <main className="ck-portfolio-shell">
+      <ModuleAmbientScene variant="work" />
       <Navbar />
       <section className="ck-portfolio-hero" aria-labelledby="portfolio-title">
-        <Link href="/" className="ck-back-link">
-          <ArrowLeft size={18} />
-          home.module
-        </Link>
         <p>&lt; portfolio.index /&gt;</p>
         <h1 id="portfolio-title">Client systems we have shipped</h1>
         <span>
@@ -50,13 +48,18 @@ export default function PortfolioPage() {
                 <span>module 0{index + 1}</span>
                 <small>{project.year}</small>
               </div>
-              <h2>{project.name}</h2>
+              <h2>
+                <Link href={`/portfolio/${project.slug}`}>{project.name}</Link>
+              </h2>
               <p>{project.summary}</p>
               <div className="ck-work-tags">
                 {project.services.map((service) => (
                   <span key={service}>{service}</span>
                 ))}
               </div>
+              <Link href={`/portfolio/${project.slug}`} className="ck-case-link">
+                read case study
+              </Link>
               <Link href={project.url} target="_blank" rel="noreferrer" className="ck-work-card-link">
                 launch site
                 <ExternalLink size={15} />

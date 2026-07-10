@@ -1,5 +1,6 @@
 import { ArrowRight, Boxes, Code2, LayoutDashboard, LifeBuoy, PenTool, ShoppingCart } from "lucide-react";
 import Link from "next/link";
+import { ModuleAmbientScene } from "@/components/common/ModuleAmbientScene";
 import { Navbar } from "@/components/navigation/Navbar";
 import { services } from "@/lib/site-modules";
 
@@ -13,6 +14,7 @@ export const metadata = {
 export default function ServicesPage() {
   return (
     <main className="ck-module-shell">
+      <ModuleAmbientScene variant="services" />
       <Navbar />
       <section className="ck-module-hero" aria-labelledby="services-title">
         <p>&lt; services.map /&gt;</p>

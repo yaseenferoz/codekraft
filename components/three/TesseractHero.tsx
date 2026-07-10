@@ -216,7 +216,7 @@ function CodeGlyphField({ hovered }: { hovered: boolean }) {
   const glyphs = useMemo(() => ["C", "K", "<", "/", ">", "{", "}"], []);
   const sprites = useMemo(
     () =>
-      Array.from({ length: 56 }, (_, index) => {
+      Array.from({ length: 42 }, (_, index) => {
         const canvas = document.createElement("canvas");
         const context = canvas.getContext("2d");
         canvas.width = 96;
@@ -240,7 +240,7 @@ function CodeGlyphField({ hovered }: { hovered: boolean }) {
           blending: AdditiveBlending,
           depthWrite: false,
         });
-        const angle = (index / 56) * Math.PI * 2;
+        const angle = (index / 42) * Math.PI * 2;
         const radius = 2.6 + seededValue(index, 1) * 1.65;
 
         return {
@@ -392,7 +392,8 @@ export function TesseractHero({ active, drag }: TesseractHeroProps) {
 
   useEffect(() => {
     const frame = requestAnimationFrame(() => {
-      setWebglReady(browserSupportsWebGL());
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      setWebglReady(!reduceMotion && browserSupportsWebGL());
     });
 
     return () => cancelAnimationFrame(frame);
@@ -408,6 +409,7 @@ export function TesseractHero({ active, drag }: TesseractHeroProps) {
         dpr={[1, 1]}
         camera={{ position: [0, 0, 7.4], fov: 40 }}
         gl={{ antialias: false, alpha: true, powerPreference: "default" }}
+        performance={{ min: 0.5 }}
       >
         <ambientLight intensity={0.7} />
         <pointLight position={[4, 5, 5]} intensity={30} color="#37C9FF" />

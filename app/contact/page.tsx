@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Code2, Mail, MapPin, Phone, UsersRound } from "lucide-react";
+import { ModuleAmbientScene } from "@/components/common/ModuleAmbientScene";
 import { JsonContactForm } from "@/components/contact/JsonContactForm";
 import { Navbar } from "@/components/navigation/Navbar";
 import { contactMethods } from "@/lib/site-modules";
@@ -14,6 +15,7 @@ export const metadata = {
 export default function ContactPage() {
   return (
     <main className="ck-module-shell">
+      <ModuleAmbientScene variant="contact" />
       <Navbar />
       <section className="ck-module-hero" aria-labelledby="contact-title">
         <p>&lt; contact.terminal /&gt;</p>

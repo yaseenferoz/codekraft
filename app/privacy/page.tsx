@@ -1,3 +1,4 @@
+import { ModuleAmbientScene } from "@/components/common/ModuleAmbientScene";
 import { Navbar } from "@/components/navigation/Navbar";
 
 export const metadata = {
@@ -8,6 +9,7 @@ export const metadata = {
 export default function PrivacyPage() {
   return (
     <main className="ck-module-shell">
+      <ModuleAmbientScene variant="privacy" />
       <Navbar />
       <section className="ck-module-hero" aria-labelledby="privacy-title">
         <p>&lt; privacy.policy /&gt;</p>

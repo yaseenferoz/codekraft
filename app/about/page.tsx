@@ -1,4 +1,5 @@
 import { Activity, Code2, Layers3, Sparkles } from "lucide-react";
+import { ModuleAmbientScene } from "@/components/common/ModuleAmbientScene";
 import { Navbar } from "@/components/navigation/Navbar";
 import { clientProjects } from "@/lib/client-projects";
 
@@ -40,6 +41,7 @@ export default function AboutPage() {
 
   return (
     <main className="ck-module-shell">
+      <ModuleAmbientScene variant="about" />
       <Navbar />
       <section className="ck-module-hero" aria-labelledby="about-title">
         <p>&lt; about.codekraft /&gt;</p>

@@ -8,6 +8,7 @@ export function SiteChatbot() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [thinking, setThinking] = useState(false);
+  const [usedSuggestions, setUsedSuggestions] = useState<string[]>([]);
   const feedRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -16,10 +17,29 @@ export function SiteChatbot() {
     },
   ]);
 
-  const suggestedQuestions = useMemo(
-    () => ["I need a website", "Estimate my project", "What should I build?", "Talk to CodeKraft"],
-    [],
-  );
+  const suggestedQuestions = useMemo(() => {
+    const recentText = messages
+      .slice(-4)
+      .map((message) => message.text)
+      .join(" ")
+      .toLowerCase();
+
+    let suggestions = ["I need a website", "Estimate my project", "Talk to CodeKraft"];
+
+    if (recentText.includes("website") || recentText.includes("web app")) {
+      suggestions = ["What pages do I need?", "How long will it take?", "What budget range fits?"];
+    } else if (recentText.includes("budget") || recentText.includes("estimate") || recentText.includes("cost")) {
+      suggestions = ["What affects the price?", "Can we phase the build?", "Start WhatsApp chat"];
+    } else if (recentText.includes("process") || recentText.includes("timeline") || recentText.includes("how long")) {
+      suggestions = ["What happens first?", "How do you handle QA?", "What after launch?"];
+    } else if (recentText.includes("portfolio") || recentText.includes("client") || recentText.includes("work")) {
+      suggestions = ["Show service options", "Which work is similar?", "Start a project brief"];
+    } else if (recentText.includes("contact") || recentText.includes("phone") || recentText.includes("email")) {
+      suggestions = ["Open contact form", "Start WhatsApp chat", "What details are needed?"];
+    }
+
+    return suggestions.filter((suggestion) => !usedSuggestions.includes(suggestion)).slice(0, 3);
+  }, [messages, usedSuggestions]);
 
   useEffect(() => {
     function handleOpen() {
@@ -84,6 +104,7 @@ export function SiteChatbot() {
       return;
     }
 
+    setUsedSuggestions((current) => [...current, question]);
     void submitQuestion(question);
   }
 
@@ -93,7 +114,8 @@ export function SiteChatbot() {
         type="button"
         className="ck-chatbot-fab"
         aria-label="Open CodeKraft assistant"
-        onClick={() => setOpen(true)}
+        aria-expanded={open}
+        onClick={() => setOpen((current) => !current)}
       >
         <Bot size={19} />
       </button>
@@ -118,13 +140,15 @@ export function SiteChatbot() {
           {thinking ? <p className="ck-chat-message is-assistant">Thinking through the CodeKraft docs...</p> : null}
         </div>
 
-        <div className="ck-chat-suggestions">
-          {suggestedQuestions.map((question) => (
-            <button key={question} type="button" onClick={() => ask(question)}>
-              {question}
-            </button>
-          ))}
-        </div>
+        {suggestedQuestions.length ? (
+          <div className="ck-chat-suggestions">
+            {suggestedQuestions.map((question) => (
+              <button key={question} type="button" onClick={() => ask(question)}>
+                {question}
+              </button>
+            ))}
+          </div>
+        ) : null}
 
         <form className="ck-chatbot-input" onSubmit={handleSubmit}>
           <input

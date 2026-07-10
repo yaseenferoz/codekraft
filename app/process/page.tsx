@@ -11,6 +11,7 @@ import {
   Smartphone,
 } from "lucide-react";
 import { CodeKraftLogoMark } from "@/components/common/CodeKraftLogoMark";
+import { ModuleAmbientScene } from "@/components/common/ModuleAmbientScene";
 import { Navbar } from "@/components/navigation/Navbar";
 import { processSteps } from "@/lib/site-modules";
 
@@ -36,6 +37,7 @@ export const metadata = {
 export default function ProcessPage() {
   return (
     <main className="ck-module-shell">
+      <ModuleAmbientScene variant="process" />
       <Navbar />
       <section className="ck-module-hero" aria-labelledby="process-title">
         <p>&lt; process.flow /&gt;</p>

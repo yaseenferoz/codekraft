@@ -2,31 +2,44 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-const headline = "We don't just code_\nWe craft digital\nexperiences.";
-const craftStart = headline.indexOf("craft");
-const craftEnd = craftStart + "craft".length;
+const bootDelay = 2050;
+const headline = "We don't just code_\nWe craft digital experiences.";
+const accentWords = ["craft"];
 
 export function TypewriterHeadline() {
   const [visible, setVisible] = useState(0);
+  const [started, setStarted] = useState(false);
 
   useEffect(() => {
+    const timeout = window.setTimeout(() => setStarted(true), bootDelay);
+    return () => window.clearTimeout(timeout);
+  }, []);
+
+  useEffect(() => {
+    if (!started) {
+      return;
+    }
+
     if (visible >= headline.length) {
       return;
     }
 
-    const delay = headline[visible] === "\n" ? 90 : 24;
+    const delay = headline[visible] === "\n" ? 120 : 34;
     const timeout = window.setTimeout(() => {
-      setVisible((current) => Math.min(current + 2, headline.length));
+      setVisible((current) => Math.min(current + 1, headline.length));
     }, delay);
 
     return () => window.clearTimeout(timeout);
-  }, [visible]);
+  }, [started, visible]);
 
   const characters = useMemo(
     () =>
       headline.slice(0, visible).split("").map((character, index) => ({
         character,
-        highlight: index >= craftStart && index < craftEnd,
+        highlight: accentWords.some((word) => {
+          const start = headline.indexOf(word);
+          return start >= 0 && index >= start && index < start + word.length;
+        }),
         key: `${character}-${index}`,
       })),
     [visible],
