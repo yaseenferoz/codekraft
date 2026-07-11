@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { MessageCircle, Menu, X } from "lucide-react";
 import { FormEvent, useState } from "react";
+import type { CSSProperties } from "react";
 import { BrandMark } from "@/components/common/BrandMark";
 import { siteModules } from "@/lib/site-modules";
 
@@ -96,6 +97,11 @@ export function Navbar() {
                 type="button"
                 key={item.key}
                 className={`ck-mobile-module ${isActivePath(item.path) ? "is-active" : ""}`}
+                style={
+                  {
+                    "--ck-shine-delay": `${-(index * 0.58 + (index % 2 ? 0.17 : 0)).toFixed(2)}s`,
+                  } as CSSProperties
+                }
                 onClick={() => navigateMobile(item.path)}
               >
                 <span>0{index + 1}</span>
@@ -104,7 +110,12 @@ export function Navbar() {
               </button>
           ))}
         </nav>
-        <button type="button" className="ck-mobile-connect" onClick={openTalkForm}>
+        <button
+          type="button"
+          className="ck-mobile-connect"
+          style={{ "--ck-shine-delay": "-2.15s" } as CSSProperties}
+          onClick={openTalkForm}
+        >
           <MessageCircle size={17} />
           <span>let&apos;s connect</span>
         </button>

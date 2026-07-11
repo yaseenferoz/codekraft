@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { ContentMotion } from "@/components/common/ContentMotion";
+import { BootLoader } from "@/components/common/BootLoader";
 import { GlobalCodeParticles } from "@/components/common/GlobalCodeParticles";
 import { SiteChatbot } from "@/components/common/SiteChatbot";
 import { SiteFooter } from "@/components/footer/SiteFooter";
@@ -44,6 +45,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased" suppressHydrationWarning>
       <body className="min-h-full" suppressHydrationWarning>
+        <BootLoader />
         <GlobalCodeParticles />
         <ContentMotion />
         {children}

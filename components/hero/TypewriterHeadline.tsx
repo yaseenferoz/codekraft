@@ -1,69 +1,38 @@
-"use client";
+import type { CSSProperties } from "react";
 
-import { useEffect, useMemo, useState } from "react";
-
-const bootDelay = 2050;
-const headline = "We don't just code_\nWe craft digital experiences.";
-const accentWords = ["craft"];
+const signalLines = [
+  {
+    before: "We craft",
+    accent: "digital",
+    after: "systems",
+  },
+  {
+    before: "with clarity,",
+    accent: "taste,",
+    after: "and motion.",
+  },
+];
 
 export function TypewriterHeadline() {
-  const [visible, setVisible] = useState(0);
-  const [started, setStarted] = useState(false);
-
-  useEffect(() => {
-    const timeout = window.setTimeout(() => setStarted(true), bootDelay);
-    return () => window.clearTimeout(timeout);
-  }, []);
-
-  useEffect(() => {
-    if (!started) {
-      return;
-    }
-
-    if (visible >= headline.length) {
-      return;
-    }
-
-    const delay = headline[visible] === "\n" ? 120 : 34;
-    const timeout = window.setTimeout(() => {
-      setVisible((current) => Math.min(current + 1, headline.length));
-    }, delay);
-
-    return () => window.clearTimeout(timeout);
-  }, [started, visible]);
-
-  const characters = useMemo(
-    () =>
-      headline.slice(0, visible).split("").map((character, index) => ({
-        character,
-        highlight: accentWords.some((word) => {
-          const start = headline.indexOf(word);
-          return start >= 0 && index >= start && index < start + word.length;
-        }),
-        key: `${character}-${index}`,
-      })),
-    [visible],
-  );
-
   return (
-    <h1 className="ck-hero-heading">
-      <span className="ck-visually-hidden">We craft digital experiences</span>
-      <span aria-hidden="true">
-        {characters.map(({ character, highlight, key }) => {
-          if (character === "\n") {
-            return <br key={key} />;
-          }
-
-          return (
-            <span
-              key={key}
-              className={highlight ? "ck-word-accent" : "ck-word-normal"}
-            >
-              {character}
-            </span>
-          );
-        })}
-        <span className="ck-type-cursor" aria-hidden="true" />
+    <h1 className="ck-hero-heading ck-hero-heading-signal">
+      <span className="ck-visually-hidden">
+        We craft digital systems with clarity, taste, and motion.
+      </span>
+      <span className="ck-hero-signal-shell" aria-hidden="true">
+        <span className="ck-hero-signal-tag">&lt;build.signal /&gt;</span>
+        {signalLines.map((line, index) => (
+          <span
+            key={line.before}
+            className="ck-hero-signal-line"
+            style={{ "--ck-delay": `${index * 150}ms` } as CSSProperties}
+          >
+            <span>{line.before}</span>
+            <span className="ck-word-accent">{line.accent}</span>
+            <span>{line.after}</span>
+          </span>
+        ))}
+        <span className="ck-hero-signal-scan" />
       </span>
     </h1>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import { Bot, Send, X } from "lucide-react";
 import { answerFromSite, type ChatMessage } from "@/lib/site-chat";
 
@@ -109,7 +110,21 @@ export function SiteChatbot() {
   }
 
   return (
-    <div className={`ck-chatbot ${open ? "is-open" : ""}`}>
+    <div
+      className={`ck-chatbot ${open ? "is-open" : ""}`}
+      style={
+        {
+          position: "fixed",
+          right: "max(1rem, env(safe-area-inset-right))",
+          bottom: "max(1rem, env(safe-area-inset-bottom))",
+          left: "auto",
+          top: "auto",
+          zIndex: 2147483000,
+          transform: "none",
+          pointerEvents: "none",
+        } as CSSProperties
+      }
+    >
       <button
         type="button"
         className="ck-chatbot-fab"
