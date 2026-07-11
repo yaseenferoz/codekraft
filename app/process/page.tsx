@@ -3,6 +3,7 @@ import {
   CheckCircle2,
   Cloud,
   Database,
+  LineChart,
   GitBranch,
   MonitorSmartphone,
   Rocket,
@@ -13,6 +14,7 @@ import {
 import { CodeKraftLogoMark } from "@/components/common/CodeKraftLogoMark";
 import { ModuleAmbientScene } from "@/components/common/ModuleAmbientScene";
 import { Navbar } from "@/components/navigation/Navbar";
+import { TesseractHero } from "@/components/three/TesseractHero";
 import { processSteps } from "@/lib/site-modules";
 
 const inputs = ["Business goals", "Users & roles", "Existing data", "Content", "Budget & timeline"];
@@ -25,9 +27,37 @@ const outputs = [
   { icon: Cloud, label: "Cloud & DevOps", detail: "Deployment, domains, backups, monitoring" },
   { icon: BrainCircuit, label: "AI Layer", detail: "Chatbots, automation, search, content assistance" },
   { icon: ShieldCheck, label: "Security & QA", detail: "Validation, permissions, device testing, launch checks" },
+  { icon: LineChart, label: "Analytics & Growth", detail: "Events, reports, conversion signals, iteration roadmap" },
 ];
 
 const buildStack = ["Next.js", "React", "TypeScript", "Node/API", "PostgreSQL", "Cloud", "AI tools", "Analytics"];
+
+const pipeline = [
+  {
+    id: "01",
+    title: "Brief intake",
+    subtitle: "Business goal, users, content, data, budget",
+    items: inputs,
+  },
+  {
+    id: "02",
+    title: "Product blueprint",
+    subtitle: "Scope, journeys, priorities, architecture",
+    items: ["Scope map", "Feature priority", "User journeys", "Data model"],
+  },
+  {
+    id: "03",
+    title: "Build system",
+    subtitle: "UI, backend, database, cloud, AI, QA",
+    items: outputs.map((output) => output.label),
+  },
+  {
+    id: "04",
+    title: "Launch loop",
+    subtitle: "Release, monitor, support, improve",
+    items: processSteps.map((step) => step.title),
+  },
+];
 
 export const metadata = {
   title: "Process | CodeKraft",
@@ -58,31 +88,51 @@ export default function ProcessPage() {
           </span>
         </div>
 
-        <div className="ck-flow-map">
-          <div className="ck-flow-lane ck-flow-lane-input">
-            <small>01 input</small>
-            {inputs.map((item) => (
-              <span key={item}>{item}</span>
+        <div className="ck-process-system">
+          <div className="ck-process-rail" aria-label="CodeKraft build pipeline">
+            <span className="ck-process-rail-line" aria-hidden="true" />
+            <span className="ck-process-rail-stop stop-one" aria-hidden="true" />
+            <span className="ck-process-rail-stop stop-two" aria-hidden="true" />
+            <span className="ck-process-rail-stop stop-engine" aria-hidden="true" />
+            <span className="ck-process-rail-stop stop-three" aria-hidden="true" />
+            <span className="ck-process-rail-stop stop-four" aria-hidden="true" />
+            <span className="ck-process-rail-packet" aria-hidden="true" />
+            {pipeline.slice(0, 2).map((phase) => (
+              <article key={phase.id} className="ck-process-node">
+                <small>{phase.id}</small>
+                <h2>{phase.title}</h2>
+                <p>{phase.subtitle}</p>
+                <div>
+                  {phase.items.slice(0, 5).map((item) => (
+                    <span key={item}>{item}</span>
+                  ))}
+                </div>
+              </article>
+            ))}
+            <div className="ck-process-engine">
+              <span className="ck-flow-pulse" />
+              <div className="ck-process-mini-tesseract" aria-hidden="true">
+                <TesseractHero scale={0.58} />
+              </div>
+              <CodeKraftLogoMark />
+              <strong>CodeKraft</strong>
+              <em>product engine</em>
+            </div>
+            {pipeline.slice(2).map((phase) => (
+              <article key={phase.id} className="ck-process-node">
+                <small>{phase.id}</small>
+                <h2>{phase.title}</h2>
+                <p>{phase.subtitle}</p>
+                <div>
+                  {phase.items.slice(0, 5).map((item) => (
+                    <span key={item}>{item}</span>
+                  ))}
+                </div>
+              </article>
             ))}
           </div>
 
-          <div className="ck-flow-lane ck-flow-lane-plan">
-            <small>02 planning</small>
-            <span>Scope map</span>
-            <span>Feature priority</span>
-            <span>User journeys</span>
-            <span>Data model</span>
-          </div>
-
-          <div className="ck-flow-center">
-            <span className="ck-flow-pulse" />
-            <CodeKraftLogoMark />
-            <strong>CodeKraft</strong>
-            <em>product engine</em>
-          </div>
-
-          <div className="ck-flow-lane ck-flow-lane-output">
-            <small>03 system layers</small>
+          <div className="ck-process-layer-grid" aria-label="System layers delivered by CodeKraft">
             {outputs.map(({ icon: Icon, label, detail }) => (
               <article key={label}>
                 <Icon size={18} />
@@ -94,26 +144,11 @@ export default function ProcessPage() {
             ))}
           </div>
 
-          <div className="ck-flow-lane ck-flow-lane-delivery">
-            <small>04 delivery</small>
-            {processSteps.map((step) => (
-              <span key={step.title}>{step.title}</span>
-            ))}
-          </div>
-
-          <div className="ck-flow-stack" aria-label="Technology stack">
+          <div className="ck-process-stack" aria-label="Technology stack">
             {buildStack.map((item) => (
               <span key={item}>{item}</span>
             ))}
           </div>
-
-          <span className="ck-flow-line line-top" />
-          <span className="ck-flow-line line-left" />
-          <span className="ck-flow-line line-right" />
-          <span className="ck-flow-line line-bottom" />
-          <span className="ck-flow-packet packet-one" />
-          <span className="ck-flow-packet packet-two" />
-          <span className="ck-flow-packet packet-three" />
         </div>
       </section>
 

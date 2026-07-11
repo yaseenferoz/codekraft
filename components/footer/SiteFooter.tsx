@@ -12,10 +12,9 @@ export function SiteFooter() {
       </div>
       <nav aria-label="Footer navigation">
         <Link href="/privacy">Privacy Policy</Link>
-        <Link href="/contact">Contact</Link>
-        <Link href="/portfolio">Work</Link>
+        <Link href="/terms">Terms &amp; Conditions</Link>
       </nav>
-      <small>© 2026 CodeKraft. All rights reserved.</small>
+      <small>&copy; 2026 CodeKraft. All rights reserved.</small>
     </footer>
   );
 }

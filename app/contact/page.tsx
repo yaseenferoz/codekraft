@@ -39,21 +39,20 @@ export default function ContactPage() {
               </Link>
             );
           })}
+          <div className="ck-social-row" aria-label="Social links">
+            <Link href="https://github.com/yaseenferoz" target="_blank" rel="noreferrer">
+              <Code2 size={18} />
+              GitHub
+            </Link>
+            <Link href="https://www.linkedin.com/in/yaseen-feroz/" target="_blank" rel="noreferrer">
+              <UsersRound size={18} />
+              LinkedIn
+            </Link>
+          </div>
         </div>
 
         <JsonContactForm />
       </section>
-
-      <div className="ck-social-row" aria-label="Social links">
-        <Link href="https://github.com/yaseenferoz" target="_blank" rel="noreferrer">
-          <Code2 size={18} />
-          GitHub
-        </Link>
-        <Link href="https://www.linkedin.com/in/yaseen-feroz/" target="_blank" rel="noreferrer">
-          <UsersRound size={18} />
-          LinkedIn
-        </Link>
-      </div>
     </main>
   );
 }

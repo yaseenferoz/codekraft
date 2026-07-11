@@ -26,6 +26,7 @@ type TesseractHeroProps = {
     x: number;
     y: number;
   };
+  scale?: number;
 };
 
 type WebGLBoundaryState = {
@@ -304,7 +305,7 @@ function TesseractFallback({ active = false }: Pick<TesseractHeroProps, "active"
   );
 }
 
-function TesseractObject({ active = false, drag = { x: 0, y: 0 } }: TesseractHeroProps) {
+function TesseractObject({ active = false, drag = { x: 0, y: 0 }, scale: baseScale = 1 }: TesseractHeroProps) {
   const group = useRef<Group>(null);
   const outer = useRef<Mesh>(null);
   const inner = useRef<Mesh>(null);
@@ -342,7 +343,7 @@ function TesseractObject({ active = false, drag = { x: 0, y: 0 } }: TesseractHer
       group.current.rotation.y += (targetY - group.current.rotation.y) * 0.09;
       group.current.rotation.z += (targetZ - group.current.rotation.z) * 0.09;
       group.current.position.y = Math.sin(elapsed * 0.62) * 0.14;
-      const scale = isEngaged ? 1.08 : 1;
+      const scale = (isEngaged ? 1.08 : 1) * baseScale;
       scaleTarget.current.set(scale, scale, scale);
       group.current.scale.lerp(scaleTarget.current, 0.08);
     }
@@ -386,7 +387,7 @@ function TesseractObject({ active = false, drag = { x: 0, y: 0 } }: TesseractHer
   );
 }
 
-export function TesseractHero({ active, drag }: TesseractHeroProps) {
+export function TesseractHero({ active, drag, scale }: TesseractHeroProps) {
   const [webglReady, setWebglReady] = useState(false);
   const fallback = <TesseractFallback active={active} />;
 
@@ -414,7 +415,7 @@ export function TesseractHero({ active, drag }: TesseractHeroProps) {
         <ambientLight intensity={0.7} />
         <pointLight position={[4, 5, 5]} intensity={30} color="#37C9FF" />
         <pointLight position={[-5, -4, 4]} intensity={24} color="#8B5CFF" />
-        <TesseractObject active={active} drag={drag} />
+        <TesseractObject active={active} drag={drag} scale={scale} />
       </Canvas>
     </WebGLBoundary>
   );

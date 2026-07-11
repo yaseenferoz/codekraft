@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useMemo, useState } from "react";
-import { ArrowRight, Braces, Check, LoaderCircle, RotateCcw } from "lucide-react";
+import { ArrowRight, Braces, Check, ChevronDown, LoaderCircle, RotateCcw } from "lucide-react";
 
 const publicRecipient = "hello@codekraft.co.in";
 
@@ -16,6 +16,54 @@ const initialForm = {
 };
 
 type SubmitState = "idle" | "sending" | "sent" | "failed";
+
+type SelectFieldProps = {
+  label: string;
+  value: string;
+  options: string[];
+  onChange: (value: string) => void;
+};
+
+function ContactSelect({ label, value, options, onChange }: SelectFieldProps) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className={`ck-contact-select ${open ? "is-open" : ""}`}>
+      <span>{label}</span>
+      <button
+        type="button"
+        className="ck-contact-select-trigger"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        onClick={() => setOpen((current) => !current)}
+        onBlur={() => window.setTimeout(() => setOpen(false), 120)}
+      >
+        <span>{value}</span>
+        <ChevronDown size={16} />
+      </button>
+      {open ? (
+        <div className="ck-contact-select-menu" role="listbox" aria-label={label}>
+          {options.map((option) => (
+            <button
+              key={option}
+              type="button"
+              role="option"
+              aria-selected={option === value}
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={() => {
+                onChange(option);
+                setOpen(false);
+              }}
+            >
+              <span>{option}</span>
+              {option === value ? <Check size={14} /> : null}
+            </button>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
 
 export function JsonContactForm() {
   const [form, setForm] = useState(initialForm);
@@ -61,7 +109,7 @@ export function JsonContactForm() {
 
   function update(key: keyof typeof form, value: string) {
     setForm((current) => ({ ...current, [key]: value }));
-    if (submitState === "failed") {
+    if (submitState === "failed" || submitState === "sent") {
       setSubmitState("idle");
     }
   }
@@ -85,27 +133,20 @@ export function JsonContactForm() {
       );
     }
 
+    if (submitState === "sent") {
+      return (
+        <>
+          brief delivered
+          <Check size={17} />
+        </>
+      );
+    }
+
     return (
       <>
         send JSON brief
         <ArrowRight size={17} />
       </>
-    );
-  }
-
-  if (submitState === "sent") {
-    return (
-      <section className="ck-json-success" aria-live="polite">
-        <span>
-          <Check size={19} />
-        </span>
-        <p>&lt; brief.sent /&gt;</p>
-        <h2>Project brief delivered.</h2>
-        <small>
-          CodeKraft received your details. This contact module will stay closed
-          until the page is refreshed.
-        </small>
-      </section>
     );
   }
 
@@ -124,38 +165,38 @@ export function JsonContactForm() {
           <span>phone</span>
           <input value={form.phone} onChange={(event) => update("phone", event.target.value)} placeholder="+91 80730 49854" />
         </label>
-        <label>
-          <span>service</span>
-          <select value={form.service} onChange={(event) => update("service", event.target.value)}>
-            <option>Website / Web App</option>
-            <option>E-Commerce</option>
-            <option>ERP / Business System</option>
-            <option>UI/UX Design</option>
-            <option>Maintenance</option>
-          </select>
-        </label>
-        <label>
-          <span>timeline</span>
-          <select value={form.timeline} onChange={(event) => update("timeline", event.target.value)}>
-            <option>Flexible</option>
-            <option>2-4 weeks</option>
-            <option>1-2 months</option>
-            <option>Urgent</option>
-          </select>
-        </label>
-        <label>
-          <span>budget</span>
-          <select value={form.budget} onChange={(event) => update("budget", event.target.value)}>
-            <option>Let&apos;s discuss</option>
-            <option>Starter</option>
-            <option>Growth</option>
-            <option>Custom system</option>
-          </select>
-        </label>
+        <ContactSelect
+          label="service"
+          value={form.service}
+          options={["Website / Web App", "E-Commerce", "ERP / Business System", "UI/UX Design", "Maintenance"]}
+          onChange={(value) => update("service", value)}
+        />
+        <ContactSelect
+          label="timeline"
+          value={form.timeline}
+          options={["Flexible", "2-4 weeks", "1-2 months", "Urgent"]}
+          onChange={(value) => update("timeline", value)}
+        />
+        <ContactSelect
+          label="budget"
+          value={form.budget}
+          options={["Let's discuss", "Starter", "Growth", "Custom system"]}
+          onChange={(value) => update("budget", value)}
+        />
         <label className="ck-json-message">
           <span>message</span>
           <textarea value={form.message} onChange={(event) => update("message", event.target.value)} placeholder="What are we building?" required />
         </label>
+        <div className="ck-contact-form-actions">
+          <button
+            type="submit"
+            className={`ck-contact-send is-${submitState}`}
+            disabled={submitState === "sending" || submitState === "sent"}
+            aria-live="polite"
+          >
+            {getButtonContent()}
+          </button>
+        </div>
       </div>
 
       <div className="ck-json-preview">
@@ -166,15 +207,18 @@ export function JsonContactForm() {
           </span>
           <small>contact.module</small>
         </div>
-        <pre>{JSON.stringify(previewPayload, null, 2)}</pre>
-        <button
-          type="submit"
-          className={`ck-contact-send is-${submitState}`}
-          disabled={submitState === "sending"}
-          aria-live="polite"
-        >
-          {getButtonContent()}
-        </button>
+        {submitState === "sent" ? (
+          <section className="ck-json-success" aria-live="polite">
+            <span>
+              <Check size={19} />
+            </span>
+            <p>&lt; brief.sent /&gt;</p>
+            <h2>Project brief delivered.</h2>
+            <small>CodeKraft received your details. The form has been reset.</small>
+          </section>
+        ) : (
+          <pre>{JSON.stringify(previewPayload, null, 2)}</pre>
+        )}
       </div>
     </form>
   );

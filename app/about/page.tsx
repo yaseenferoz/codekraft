@@ -1,4 +1,4 @@
-import { Activity, Code2, Layers3, Sparkles } from "lucide-react";
+import { Activity, Code2, Cpu, Database, Layers3, Rocket, ShieldCheck, Sparkles } from "lucide-react";
 import { ModuleAmbientScene } from "@/components/common/ModuleAmbientScene";
 import { Navbar } from "@/components/navigation/Navbar";
 import { clientProjects } from "@/lib/client-projects";
@@ -23,6 +23,67 @@ const principles = [
     icon: Activity,
     title: "Launch is the middle",
     text: "We care about the product after it ships: performance, iteration, maintenance, and measurable business impact.",
+  },
+];
+
+const operatingSystem = [
+  {
+    icon: Cpu,
+    label: "strategy.kernel",
+    title: "Business logic before visual polish",
+    text: "We first understand who the product is for, what action it should create, and which business workflow it has to support.",
+  },
+  {
+    icon: Layers3,
+    label: "interface.layer",
+    title: "A repeatable interface language",
+    text: "Navigation, cards, forms, dashboards, mobile states, and interaction patterns are treated as one connected design system.",
+  },
+  {
+    icon: Database,
+    label: "data.model",
+    title: "Structure for real operations",
+    text: "For apps and business systems, we think through data, roles, reports, permissions, and future modules before the UI becomes heavy.",
+  },
+  {
+    icon: ShieldCheck,
+    label: "qa.protocol",
+    title: "Launch with checks, not hope",
+    text: "We review responsive behavior, accessibility basics, SEO, performance, content clarity, and production readiness before release.",
+  },
+];
+
+const studioSignals = [
+  ["01", "Design that feels premium, but still helps people complete real tasks."],
+  ["02", "Code that is organized enough to maintain after the first launch excitement fades."],
+  ["03", "Content and layouts shaped around trust, conversion, and clear decision paths."],
+  ["04", "Support for websites, apps, commerce, ERP-style systems, AI, cloud, and growth loops."],
+];
+
+const expertiseMatrix = [
+  {
+    title: "Interface",
+    items: ["Next.js", "React", "TypeScript", "Tailwind", "Framer Motion"],
+  },
+  {
+    title: "Systems",
+    items: ["Node.js", "APIs", "Auth", "Dashboards", "Admin Panels"],
+  },
+  {
+    title: "Data",
+    items: ["Supabase", "PostgreSQL", "Storage", "Lead Pipelines", "Reports"],
+  },
+  {
+    title: "Launch",
+    items: ["Vercel", "SEO", "Analytics", "Resend", "Telegram Alerts"],
+  },
+  {
+    title: "AI Layer",
+    items: ["Gemini", "Chatbots", "Automation", "Brief Capture", "Search"],
+  },
+  {
+    title: "Product Care",
+    items: ["QA", "Mobile Checks", "Performance", "Maintenance", "Iteration"],
   },
 ];
 
@@ -112,6 +173,61 @@ export default function AboutPage() {
               and innovation.
             </span>
           </article>
+        </div>
+      </section>
+
+      <section className="ck-studio-os" aria-label="CodeKraft studio operating system">
+        <div className="ck-studio-core">
+          <p>&lt; studio.os /&gt;</p>
+          <h2>Small team energy. Product-company discipline.</h2>
+          <span>
+            CodeKraft works like a compact product cell: strategy, UX,
+            frontend, backend, content, launch, and growth decisions stay close
+            together so the final product feels intentional.
+          </span>
+          <div aria-label="CodeKraft studio signals">
+            {studioSignals.map(([id, text]) => (
+              <article key={id}>
+                <strong>{id}</strong>
+                <span>{text}</span>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div className="ck-studio-orbit">
+          <span className="ck-studio-orbit-line" aria-hidden="true" />
+          {operatingSystem.map(({ icon: Icon, label, title, text }) => (
+            <article key={label}>
+              <Icon size={20} />
+              <small>{label}</small>
+              <h3>{title}</h3>
+              <p>{text}</p>
+            </article>
+          ))}
+          <div className="ck-studio-launch">
+            <Rocket size={24} />
+            <strong>ship.module</strong>
+            <span>build, test, launch, improve</span>
+          </div>
+          <div className="ck-studio-runtime" aria-label="CodeKraft expertise matrix">
+            <div className="ck-studio-runtime-head">
+              <strong>expertise.matrix</strong>
+              <span>tools we use when the project actually needs them</span>
+            </div>
+            <div className="ck-studio-runtime-grid">
+              {expertiseMatrix.map((group) => (
+                <article key={group.title}>
+                  <strong>{group.title}</strong>
+                  <div>
+                    {group.items.map((item) => (
+                      <span key={item}>{item}</span>
+                    ))}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
