@@ -29,8 +29,17 @@ export async function generateMetadata({ params }: CaseStudyPageProps): Promise<
   }
 
   return {
-    title: `${project.name} Case Study | CodeKraft`,
+    title: `${project.name} Case Study`,
     description: project.summary,
+    keywords: [
+      `${project.name} case study`,
+      `${project.name} website`,
+      `${project.category} website development`,
+      ...project.services,
+      ...project.stack,
+      "CodeKraft portfolio",
+      "responsive website development",
+    ],
     alternates: {
       canonical: `https://www.codekraft.co.in/portfolio/${project.slug}`,
     },

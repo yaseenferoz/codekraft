@@ -7,8 +7,16 @@ import { clientProjects } from "@/lib/client-projects";
 const categories = Array.from(new Set(clientProjects.map((project) => project.category)));
 
 export const metadata = {
-  title: "Portfolio | CodeKraft",
+  title: "Portfolio",
   description: "Explore selected CodeKraft client work across web, commerce, hospitality, public-sector, wellness, and innovation projects.",
+  keywords: [
+    "CodeKraft portfolio",
+    "website development case studies",
+    "web design portfolio India",
+    "client website projects",
+    "Next.js portfolio",
+    "responsive website examples",
+  ],
 };
 
 export default function PortfolioPage() {

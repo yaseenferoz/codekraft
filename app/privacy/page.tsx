@@ -33,7 +33,7 @@ const privacyItems = [
 ];
 
 export const metadata = {
-  title: "Privacy Policy | CodeKraft",
+  title: "Privacy Policy",
   description: "CodeKraft privacy policy for website visitors, contact enquiries, and project communication.",
 };
 

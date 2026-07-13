@@ -60,8 +60,15 @@ const pipeline = [
 ];
 
 export const metadata = {
-  title: "Process | CodeKraft",
+  title: "Process",
   description: "See the CodeKraft delivery process from discovery and design through development, deployment, and support.",
+  keywords: [
+    "website development process",
+    "web app development process",
+    "product discovery design development deployment",
+    "software delivery process",
+    "AI cloud database website workflow",
+  ],
 };
 
 export default function ProcessPage() {

@@ -88,8 +88,15 @@ const expertiseMatrix = [
 ];
 
 export const metadata = {
-  title: "About | CodeKraft",
+  title: "About",
   description: "Learn how CodeKraft designs and builds premium digital products, websites, and business systems.",
+  keywords: [
+    "about CodeKraft",
+    "software development studio India",
+    "digital product studio Karnataka",
+    "premium website design studio",
+    "web application team Gulbarga",
+  ],
 };
 
 export default function AboutPage() {

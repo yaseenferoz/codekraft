@@ -8,8 +8,16 @@ import { contactMethods } from "@/lib/site-modules";
 const icons = [Mail, Phone, MapPin];
 
 export const metadata = {
-  title: "Contact | CodeKraft",
+  title: "Contact",
   description: "Contact CodeKraft to discuss websites, web applications, e-commerce, ERP systems, and premium digital experiences.",
+  keywords: [
+    "contact CodeKraft",
+    "hire website developer India",
+    "website developer Gulbarga",
+    "web app development enquiry",
+    "software company Karnataka",
+    "hello@codekraft.co.in",
+  ],
 };
 
 export default function ContactPage() {

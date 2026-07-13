@@ -47,7 +47,7 @@ const termsItems = [
 ];
 
 export const metadata = {
-  title: "Terms & Conditions | CodeKraft",
+  title: "Terms & Conditions",
   description: "CodeKraft terms and conditions for project scope, delivery, payments, third-party services, and support.",
 };
 

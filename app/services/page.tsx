@@ -55,8 +55,17 @@ const engagementLayers = [
 ];
 
 export const metadata = {
-  title: "Services | CodeKraft",
+  title: "Services",
   description: "CodeKraft services include websites, web applications, e-commerce, ERP systems, UI/UX design, and maintenance.",
+  keywords: [
+    "website development services",
+    "web application development services",
+    "ecommerce development services",
+    "ERP software development",
+    "UI UX design services",
+    "website maintenance India",
+    "AI chatbot development",
+  ],
 };
 
 export default function ServicesPage() {
