@@ -1,4 +1,5 @@
 import { answerFromSite, buildSiteContext, type ChatMessage } from "@/lib/site-chat";
+import { siteConfig } from "@/lib/site-config";
 
 type ChatLead = {
   name: string;
@@ -324,7 +325,7 @@ function buildChatLeadHtmlEmail(lead: ChatLead, messages: ChatMessage[]) {
       </tr>
       <tr>
         <td style="padding:18px 30px;border-top:1px solid #17213a;color:#6f7d96;font-size:12px;">
-          Sent by CodeKraft AI assistant - hello@codekraft.co.in
+          Sent by CodeKraft AI assistant - ${siteConfig.contactEmail}
         </td>
       </tr>
     </table>
@@ -352,7 +353,7 @@ async function emailChatLead(lead: ChatLead | null, messages: ChatMessage[]): Pr
   }
 
   const fromEmail = process.env.RESEND_FROM_EMAIL ?? "CodeKraft <onboarding@resend.dev>";
-  const deliveryEmail = process.env.RESEND_DELIVERY_EMAIL ?? "hello@codekraft.co.in";
+  const deliveryEmail = process.env.RESEND_DELIVERY_EMAIL ?? siteConfig.contactEmail;
   const subjectName = lead.name && lead.name !== "Chatbot visitor" ? ` from ${lead.name}` : "";
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",

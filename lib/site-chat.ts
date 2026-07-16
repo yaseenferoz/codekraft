@@ -1,5 +1,6 @@
 import { clientProjects } from "@/lib/client-projects";
 import { processSteps, services, siteKnowledge } from "@/lib/site-modules";
+import { siteConfig } from "@/lib/site-config";
 
 export type ChatMessage = {
   role: "assistant" | "user";
@@ -49,9 +50,9 @@ export function buildSiteContext() {
     "- Growth: maintenance, iteration, performance checks, analytics, and improvements after launch.",
     "",
     "Contact:",
-    "- Email: hello@codekraft.co.in",
+    `- Email: ${siteConfig.contactEmail}`,
     "- Phone: +91 80730 49854",
-    "- Location: Gulbarga, Karnataka, India",
+    `- Location: ${siteConfig.location}`,
   ].join("\n");
 }
 
@@ -160,7 +161,7 @@ export function answerFromSite(question: string) {
   }
 
   if (input.includes("contact") || input.includes("phone") || input.includes("email") || input.includes("call")) {
-    return "You can contact CodeKraft at hello@codekraft.co.in or call +91 80730 49854. The contact module also sends a structured JSON brief, because apparently even forms deserve a little engineering dignity.";
+    return `You can contact CodeKraft at ${siteConfig.contactEmail} or call ${siteConfig.phoneDisplay}. For CampusKraft, use the dedicated institutional interest form on the product page.`;
   }
 
   if (input.includes("client") || input.includes("portfolio") || input.includes("work")) {

@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Code2, Mail, MapPin, Phone, UsersRound } from "lucide-react";
+import { ArrowRight, Code2, GraduationCap, Mail, MapPin, Phone, UsersRound } from "lucide-react";
+import type { Metadata } from "next";
 import { ModuleAmbientScene } from "@/components/common/ModuleAmbientScene";
 import { JsonContactForm } from "@/components/contact/JsonContactForm";
 import { Navbar } from "@/components/navigation/Navbar";
@@ -7,8 +8,8 @@ import { contactMethods } from "@/lib/site-modules";
 
 const icons = [Mail, Phone, MapPin];
 
-export const metadata = {
-  title: "Contact",
+export const metadata: Metadata = {
+  title: { absolute: "Contact CodeKraft | Projects and CampusKraft Enquiries" },
   description: "Contact CodeKraft to discuss websites, web applications, e-commerce, ERP systems, and premium digital experiences.",
   keywords: [
     "contact CodeKraft",
@@ -16,8 +17,11 @@ export const metadata = {
     "website developer Gulbarga",
     "web app development enquiry",
     "software company Karnataka",
-    "hello@codekraft.co.in",
+    "yaseenferoz@codekraft.co.in",
   ],
+  alternates: { canonical: "https://www.codekraft.co.in/contact" },
+  openGraph: { title: "Contact CodeKraft | Projects and CampusKraft Enquiries", description: "Discuss a custom software project or register institutional interest in CampusKraft.", url: "https://www.codekraft.co.in/contact", type: "website" },
+  twitter: { card: "summary_large_image", title: "Contact CodeKraft", description: "Custom software projects and CampusKraft institutional enquiries." },
 };
 
 export default function ContactPage() {
@@ -47,6 +51,9 @@ export default function ContactPage() {
               </Link>
             );
           })}
+          <article className="ck-campuskraft-contact-card">
+            <GraduationCap size={22} /><span>CampusKraft enquiry path</span><h2>Interested in CampusKraft?</h2><p>Schools, colleges, universities and educational organisations can register interest, share operational challenges or discuss possible product-discovery participation with CodeKraft.</p><div><Link href="/products/campuskraft#early-access">Register CampusKraft Interest <ArrowRight size={15} /></Link><Link href="/products/campuskraft">Explore CampusKraft</Link></div>
+          </article>
           <div className="ck-social-row" aria-label="Social links">
             <Link href="https://github.com/yaseenferoz" target="_blank" rel="noreferrer">
               <Code2 size={18} />

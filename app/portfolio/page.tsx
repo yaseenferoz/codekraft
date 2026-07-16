@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { ExternalLink, FolderKanban } from "lucide-react";
+import type { Metadata } from "next";
 import { ModuleAmbientScene } from "@/components/common/ModuleAmbientScene";
 import { Navbar } from "@/components/navigation/Navbar";
 import { clientProjects } from "@/lib/client-projects";
 
 const categories = Array.from(new Set(clientProjects.map((project) => project.category)));
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Portfolio",
   description: "Explore selected CodeKraft client work across web, commerce, hospitality, public-sector, wellness, and innovation projects.",
   keywords: [
@@ -17,6 +18,8 @@ export const metadata = {
     "Next.js portfolio",
     "responsive website examples",
   ],
+  alternates: { canonical: "https://www.codekraft.co.in/portfolio" },
+  openGraph: { title: "CodeKraft Work and Products in Development", description: "Explore delivered client work and the separate CampusKraft product vision currently in development.", url: "https://www.codekraft.co.in/portfolio", type: "website" },
 };
 
 export default function PortfolioPage() {
@@ -75,6 +78,9 @@ export default function PortfolioPage() {
             </article>
           ))}
         </div>
+      </section>
+      <section className="ck-portfolio-product-callout">
+        <div><span>CodeKraft Product</span><em>In Development</em></div><h2>CampusKraft</h2><p>An upcoming education operations platform designed around admissions, academics, attendance, finance, communication and campus administration. It is shown separately from delivered client work because it remains in development.</p><Link href="/products/campuskraft">Explore Product Vision</Link>
       </section>
     </main>
   );

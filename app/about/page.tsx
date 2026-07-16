@@ -1,4 +1,6 @@
 import { Activity, Code2, Cpu, Database, Layers3, Rocket, ShieldCheck, Sparkles } from "lucide-react";
+import Link from "next/link";
+import type { Metadata } from "next";
 import { ModuleAmbientScene } from "@/components/common/ModuleAmbientScene";
 import { Navbar } from "@/components/navigation/Navbar";
 import { clientProjects } from "@/lib/client-projects";
@@ -87,9 +89,12 @@ const expertiseMatrix = [
   },
 ];
 
-export const metadata = {
-  title: "About",
-  description: "Learn how CodeKraft designs and builds premium digital products, websites, and business systems.",
+export const metadata: Metadata = {
+  title: { absolute: "About CodeKraft | Software Engineering and Product Vision" },
+  description: "Learn about CodeKraft's mission to build thoughtful software, custom digital platforms and focused SaaS products such as CampusKraft.",
+  alternates: { canonical: "https://www.codekraft.co.in/about" },
+  openGraph: { title: "About CodeKraft | Software Engineering and Product Vision", description: "CodeKraft builds custom platforms and focused SaaS products, including CampusKraft.", url: "https://www.codekraft.co.in/about", type: "website" },
+  twitter: { card: "summary_large_image", title: "About CodeKraft", description: "Software engineering, product vision and the upcoming CampusKraft education platform." },
   keywords: [
     "about CodeKraft",
     "software development studio India",
@@ -104,7 +109,7 @@ export default function AboutPage() {
     [String(clientProjects.length), "client modules"],
     ["6", "service lanes"],
     ["5", "delivery phases"],
-    ["24/7", "digital mindset"],
+    ["SaaS", "product direction"],
   ];
 
   return (
@@ -263,6 +268,17 @@ export default function AboutPage() {
             </article>
           ))}
         </div>
+      </section>
+
+      <section className="ck-about-vision" aria-labelledby="about-vision-title">
+        <header><p>&lt; company.vision /&gt;</p><h2 id="about-vision-title">Our Vision</h2><span>CodeKraft exists to build software that improves how organisations operate. Alongside client-focused digital solutions, our long-term mission is to create scalable SaaS products that address real industry-specific challenges.</span><strong>CampusKraft is CodeKraft&apos;s first flagship product, currently being developed as a modern education operations platform for schools, colleges and other institutions.</strong></header>
+        <div className="ck-about-vision-grid">
+          <article><span>Mission</span><h3>Build dependable, thoughtfully designed software that solves practical problems.</h3></article>
+          <article><span>Vision</span><h3>Develop a portfolio of focused SaaS platforms for education, healthcare, enterprise operations and intelligent automation.</h3></article>
+          <article><span>Engineering Principles</span><ul>{["Clarity before complexity", "Scalable foundations", "Security from the beginning", "Accessible user experiences", "Measurable operational value", "Continuous improvement"].map((item) => <li key={item}>{item}</li>)}</ul></article>
+          <article><span>Values</span><ul>{["Honesty", "Ownership", "Craftsmanship", "Long-term thinking", "Customer trust", "Responsible innovation"].map((item) => <li key={item}>{item}</li>)}</ul></article>
+        </div>
+        <nav><Link href="/products/campuskraft">Explore CampusKraft</Link><Link href="/contact">Discuss a Project</Link></nav>
       </section>
     </main>
   );

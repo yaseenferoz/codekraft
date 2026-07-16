@@ -40,22 +40,22 @@ It also stores the lead in Supabase when Supabase environment variables are conf
 Public email:
 
 ```txt
-hello@codekraft.co.in
+yaseenferoz@codekraft.co.in
 ```
 
 Required local environment variables:
 
 ```txt
 RESEND_API_KEY=
-RESEND_FROM_EMAIL=CodeKraft <hello@codekraft.co.in>
-RESEND_DELIVERY_EMAIL=hello@codekraft.co.in
+RESEND_FROM_EMAIL=CodeKraft <verified-sender@codekraft.co.in>
+RESEND_DELIVERY_EMAIL=yaseenferoz@codekraft.co.in
 SUPABASE_URL=
 SUPABASE_SERVICE_ROLE_KEY=
 TELEGRAM_BOT_TOKEN=
 TELEGRAM_CHAT_ID=8740133934
 ```
 
-Important: `hello@codekraft.co.in` must be verified in Resend before production sending from that address.
+Important: `RESEND_FROM_EMAIL` must use an address or domain verified in Resend. The sender may remain a different verified technical address; set `RESEND_DELIVERY_EMAIL=yaseenferoz@codekraft.co.in` so website notifications reach the intended business inbox.
 
 Supabase table:
 

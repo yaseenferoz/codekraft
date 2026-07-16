@@ -1,5 +1,7 @@
 import { ModuleAmbientScene } from "@/components/common/ModuleAmbientScene";
 import { Navbar } from "@/components/navigation/Navbar";
+import type { Metadata } from "next";
+import { siteConfig } from "@/lib/site-config";
 
 const privacyItems = [
   {
@@ -25,16 +27,44 @@ const privacyItems = [
   },
   {
     id: "04",
+    title: "CampusKraft Interest Information",
+    tag: "product.discovery",
+    body:
+      "When an institution registers interest in CampusKraft, CodeKraft may collect contact details, institution information, approximate student count, areas of interest and operational challenges. This information is used for product discovery, communication and evaluating potential pilot or early-access participation.",
+  },
+  {
+    id: "05",
+    title: "Processors and Delivery Services",
+    tag: "service.providers",
+    body:
+      "Submitted information may be processed by infrastructure, database, email-delivery, analytics or communication providers used to operate the website and respond to enquiries. These providers are used only where relevant to the website workflow.",
+  },
+  {
+    id: "06",
+    title: "Retention and Choices",
+    tag: "retention.controls",
+    body:
+      "We retain enquiry information for as long as reasonably needed for communication, product discovery, project records or operational requirements. You may ask CodeKraft to review, correct or delete information, subject to legitimate record-keeping needs.",
+  },
+  {
+    id: "07",
+    title: "Cookies and Analytics",
+    tag: "usage.signals",
+    body:
+      "The website may use essential browser storage and proportionate analytics or operational logs to understand performance and usage. CodeKraft does not use this policy to claim certifications or legal compliance that has not been formally established.",
+  },
+  {
+    id: "08",
     title: "Contact",
     tag: "privacy.channel",
-    body:
-      "For privacy-related questions, contact CodeKraft at hello@codekraft.co.in or +91 80730 49854.",
+    body: `For privacy-related questions, contact CodeKraft at ${siteConfig.contactEmail} or ${siteConfig.phoneDisplay}.`,
   },
 ];
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Privacy Policy",
   description: "CodeKraft privacy policy for website visitors, contact enquiries, and project communication.",
+  alternates: { canonical: "https://www.codekraft.co.in/privacy" },
 };
 
 export default function PrivacyPage() {
@@ -59,7 +89,7 @@ export default function PrivacyPage() {
   collect: "project enquiry data",
   sellData: false,
   purpose: "reply, plan, deliver",
-  contact: "hello@codekraft.co.in"
+  contact: "yaseenferoz@codekraft.co.in"
 }`}</code>
         </div>
         <div className="ck-legal-grid">

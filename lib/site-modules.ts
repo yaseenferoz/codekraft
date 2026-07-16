@@ -1,3 +1,5 @@
+import { siteConfig } from "@/lib/site-config";
+
 export const siteModules = [
   { key: "home", label: "home", path: "/" },
   { key: "about", label: "about", path: "/about" },
@@ -88,8 +90,8 @@ export const processSteps = [
 export const contactMethods = [
   {
     label: "Email",
-    value: "hello@codekraft.co.in",
-    href: "mailto:hello@codekraft.co.in",
+    value: siteConfig.contactEmail,
+    href: `mailto:${siteConfig.contactEmail}`,
   },
   {
     label: "Phone",
@@ -98,15 +100,16 @@ export const contactMethods = [
   },
   {
     label: "Location",
-    value: "Gulbarga, Karnataka, India",
-    href: "https://www.google.com/maps/search/?api=1&query=Gulbarga%2C%20Karnataka%2C%20India",
+    value: siteConfig.location,
+    href: "https://www.google.com/maps/search/?api=1&query=Kalaburagi%2C%20Karnataka%2C%20India",
   },
 ];
 
 export const siteKnowledge = [
-  "CodeKraft is a software development studio based in Gulbarga, Karnataka, India.",
+  "CodeKraft is a software engineering and product company based in Kalaburagi, Karnataka, India.",
   "CodeKraft builds websites, web applications, e-commerce systems, ERP and business systems, UI/UX design, and maintenance plans.",
-  "CodeKraft's public contact email is hello@codekraft.co.in and phone number is +91 80730 49854.",
+  `CodeKraft's public contact email is ${siteConfig.contactEmail} and phone number is ${siteConfig.phoneDisplay}.`,
+  "CampusKraft is CodeKraft's first flagship SaaS product. It is an upcoming education operations platform currently in MVP development and open for institutional interest.",
   "CodeKraft uses a design direction inspired by premium product systems: Apple, Linear, Stripe, Vercel, Figma, and VS Code.",
   "The CodeKraft process is Discover, Design, Develop, Deploy, and Support.",
   "CodeKraft client projects include GM Aerotech, Vril Innovation, NDRF, MA Quality Products, Ayasya Yoga, Hotel Ashokavana, Qaser Al Talah, Vibrant Ritchie, Ceyone Society, and Make My Project.",

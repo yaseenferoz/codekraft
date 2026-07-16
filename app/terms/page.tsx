@@ -1,5 +1,7 @@
 import { ModuleAmbientScene } from "@/components/common/ModuleAmbientScene";
 import { Navbar } from "@/components/navigation/Navbar";
+import type { Metadata } from "next";
+import { siteConfig } from "@/lib/site-config";
 
 const termsItems = [
   {
@@ -44,11 +46,32 @@ const termsItems = [
     body:
       "After launch, maintenance, fixes, improvements, backups, monitoring, and feature additions can continue through a support plan or separate agreement.",
   },
+  {
+    id: "07",
+    title: "CampusKraft Product Status",
+    tag: "product.preview",
+    body:
+      "CampusKraft is under development. Concept previews are illustrative, roadmap items may change, and no fixed launch date or product availability is promised through this website.",
+  },
+  {
+    id: "08",
+    title: "Early Interest",
+    tag: "interest.intent",
+    body:
+      "Registering interest in CampusKraft is not a purchase, does not guarantee pilot or early access, and does not create a contractual commitment. Any future participation or commercial arrangement would require separate agreement.",
+  },
+  {
+    id: "09",
+    title: "Intellectual Property and Contact",
+    tag: "ownership.rules",
+    body: `CodeKraft website content, product concepts and proprietary materials remain with CodeKraft unless otherwise agreed. Questions may be sent to ${siteConfig.contactEmail}.`,
+  },
 ];
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Terms & Conditions",
   description: "CodeKraft terms and conditions for project scope, delivery, payments, third-party services, and support.",
+  alternates: { canonical: "https://www.codekraft.co.in/terms" },
 };
 
 export default function TermsPage() {

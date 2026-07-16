@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { MessageCircle, Menu, X } from "lucide-react";
-import { FormEvent, useState } from "react";
+import { ChevronDown, MessageCircle, Menu, X } from "lucide-react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { BrandMark } from "@/components/common/BrandMark";
 import { siteModules } from "@/lib/site-modules";
@@ -13,9 +13,41 @@ const whatsappNumber = "918073049854";
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isTalkOpen, setIsTalkOpen] = useState(false);
+  const [isProductsOpen, setIsProductsOpen] = useState(false);
   const [visitorName, setVisitorName] = useState("");
+  const productsRef = useRef<HTMLDivElement>(null);
+  const productsTriggerRef = useRef<HTMLButtonElement>(null);
+  const mobileTriggerRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
   const router = useRouter();
+
+  useEffect(() => {
+    function closeOnOutsidePointer(event: PointerEvent) {
+      if (productsRef.current && event.target instanceof Node && !productsRef.current.contains(event.target)) {
+        setIsProductsOpen(false);
+      }
+    }
+
+    function closeOnEscape(event: KeyboardEvent) {
+      if (event.key !== "Escape") return;
+      if (isProductsOpen) {
+        setIsProductsOpen(false);
+        productsTriggerRef.current?.focus();
+      } else if (isOpen) {
+        setIsOpen(false);
+        mobileTriggerRef.current?.focus();
+      } else if (isTalkOpen) {
+        setIsTalkOpen(false);
+      }
+    }
+
+    document.addEventListener("pointerdown", closeOnOutsidePointer);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", closeOnOutsidePointer);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [isOpen, isProductsOpen, isTalkOpen]);
 
   function openTalkForm() {
     setIsOpen(false);
@@ -57,7 +89,7 @@ export function Navbar() {
           <Link href="/" className={`ck-nav-link ${pathname === "/" ? "is-active" : ""}`}>
             &lt;home&gt;
           </Link>
-          {siteModules.slice(1).map((item) => (
+          {siteModules.slice(1, -1).map((item) => (
               <Link
                 key={item.key}
                 href={item.path}
@@ -66,12 +98,58 @@ export function Navbar() {
                 &lt;{item.label}&gt;
               </Link>
           ))}
+          <div
+            ref={productsRef}
+            className={`ck-products-nav ${isProductsOpen ? "is-open" : ""}`}
+            onMouseEnter={() => setIsProductsOpen(true)}
+            onMouseLeave={() => setIsProductsOpen(false)}
+            onBlur={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget)) setIsProductsOpen(false);
+            }}
+          >
+            <button
+              ref={productsTriggerRef}
+              type="button"
+              className={`ck-nav-link ${isActivePath("/products") || isActivePath("/roadmap") ? "is-active" : ""}`}
+              aria-haspopup="menu"
+              aria-expanded={isProductsOpen}
+              aria-controls="ck-products-menu"
+              onClick={() => setIsProductsOpen((current) => !current)}
+            >
+              &lt;products&gt;
+              <ChevronDown size={14} />
+            </button>
+            {isProductsOpen ? <div className="ck-products-menu" id="ck-products-menu" role="menu">
+              <Link href="/products" role="menuitem" onClick={() => setIsProductsOpen(false)}>
+                <span><strong>Products Overview</strong><small>Current focus and future directions</small></span>
+                <em>View</em>
+              </Link>
+              <Link href="/products/campuskraft" role="menuitem" onClick={() => setIsProductsOpen(false)}>
+                <span>
+                  <strong>CampusKraft</strong>
+                  <small>Education operations platform</small>
+                </span>
+                <em>Upcoming</em>
+              </Link>
+              <Link href="/roadmap" role="menuitem" onClick={() => setIsProductsOpen(false)}>
+                <span><strong>Product Vision</strong><small>How CodeKraft decides what to build</small></span>
+                <em>Roadmap</em>
+              </Link>
+            </div> : null}
+          </div>
+          <Link
+            href="/contact"
+            className={`ck-nav-link ${isActivePath("/contact") ? "is-active" : ""}`}
+          >
+            &lt;contact&gt;
+          </Link>
         </nav>
         <button type="button" className="ck-talk-button" onClick={openTalkForm}>
           let&apos;s talk_
           <span />
         </button>
         <button
+          ref={mobileTriggerRef}
           type="button"
           className="ck-mobile-nav-trigger"
           aria-label={isOpen ? "Close CodeKraft menu" : "Open CodeKraft menu"}
@@ -109,6 +187,25 @@ export function Navbar() {
                 <small>{isActivePath(item.path) ? "active module" : "open module"}</small>
               </button>
           ))}
+          <button
+            type="button"
+            className={`ck-mobile-module ck-mobile-product ${isActivePath("/products") && !isActivePath("/products/campuskraft") ? "is-active" : ""}`}
+            onClick={() => navigateMobile("/products")}
+          >
+            <span>07</span><strong>products.tsx</strong><small>product overview</small>
+          </button>
+          <button
+            type="button"
+            className={`ck-mobile-module ck-mobile-product ${isActivePath("/products/campuskraft") ? "is-active" : ""}`}
+            onClick={() => navigateMobile("/products/campuskraft")}
+          >
+            <span>08</span>
+            <strong>CampusKraft.tsx</strong>
+            <small>product / upcoming</small>
+          </button>
+          <button type="button" className={`ck-mobile-module ck-mobile-product ${isActivePath("/roadmap") ? "is-active" : ""}`} onClick={() => navigateMobile("/roadmap")}>
+            <span>09</span><strong>roadmap.tsx</strong><small>product vision</small>
+          </button>
         </nav>
         <button
           type="button"

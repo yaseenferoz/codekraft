@@ -13,6 +13,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { ModuleAmbientScene } from "@/components/common/ModuleAmbientScene";
 import { Navbar } from "@/components/navigation/Navbar";
 import { services } from "@/lib/site-modules";
@@ -54,7 +55,7 @@ const engagementLayers = [
   { icon: ShieldCheck, title: "QA & Support", text: "We test on real devices, ship carefully, and keep improving the product after launch." },
 ];
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Services",
   description: "CodeKraft services include websites, web applications, e-commerce, ERP systems, UI/UX design, and maintenance.",
   keywords: [
@@ -66,6 +67,8 @@ export const metadata = {
     "website maintenance India",
     "AI chatbot development",
   ],
+  alternates: { canonical: "https://www.codekraft.co.in/services" },
+  openGraph: { title: "Software Engineering Services by CodeKraft", description: "Web applications, product engineering, cloud systems, ERP workflows, UI/UX and AI-enabled solutions.", url: "https://www.codekraft.co.in/services", type: "website" },
 };
 
 export default function ServicesPage() {
@@ -161,6 +164,10 @@ export default function ServicesPage() {
           open contact
           <ArrowRight size={18} />
         </Link>
+      </section>
+      <section className="ck-product-practice-callout">
+        <div><p>&lt; product.practice /&gt;</p><h2>We Build for Clients and for the Long Term</h2><span>The same product strategy, interface engineering, backend architecture and cloud practices used in our client work also inform CodeKraft&apos;s own product development, including CampusKraft.</span></div>
+        <Link href="/products/campuskraft">See CampusKraft <ArrowRight size={17} /></Link>
       </section>
     </main>
   );

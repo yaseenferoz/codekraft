@@ -4,37 +4,37 @@ import { BootLoader } from "@/components/common/BootLoader";
 import { GlobalCodeParticles } from "@/components/common/GlobalCodeParticles";
 import { SiteChatbot } from "@/components/common/SiteChatbot";
 import { SiteFooter } from "@/components/footer/SiteFooter";
+import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
 
-const siteUrl = "https://www.codekraft.co.in";
+const siteUrl = siteConfig.siteUrl;
 
-const organizationJsonLd = {
+const siteJsonLd = {
   "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  name: "CodeKraft",
-  url: siteUrl,
-  logo: `${siteUrl}/logo.svg`,
-  image: `${siteUrl}/logo.svg`,
-  email: "hello@codekraft.co.in",
-  telephone: "+918073049854",
-  areaServed: ["India", "Karnataka", "Gulbarga", "Kalaburagi"],
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Gulbarga",
-    addressRegion: "Karnataka",
-    addressCountry: "IN",
-  },
-  sameAs: ["https://www.linkedin.com/in/yaseen-feroz/", "https://github.com/yaseenferoz"],
-  knowsAbout: [
-    "Website development",
-    "Web application development",
-    "E-commerce development",
-    "ERP systems",
-    "UI/UX design",
-    "Next.js development",
-    "React development",
-    "AI chatbot integration",
-    "Supabase lead management",
+  "@graph": [
+    {
+      "@type": "ProfessionalService",
+      "@id": `${siteUrl}/#organization`,
+      name: siteConfig.companyName,
+      url: siteUrl,
+      logo: `${siteUrl}/logo.svg`,
+      image: `${siteUrl}/logo.svg`,
+      email: siteConfig.contactEmail,
+      telephone: siteConfig.phoneHref,
+      founder: { "@type": "Person", name: siteConfig.founder },
+      areaServed: ["India", "Karnataka", "Kalaburagi"],
+      address: { "@type": "PostalAddress", addressLocality: "Kalaburagi", addressRegion: "Karnataka", addressCountry: "IN" },
+      sameAs: ["https://www.linkedin.com/in/yaseen-feroz/", "https://github.com/yaseenferoz"],
+      knowsAbout: ["Web application development", "Cloud application development", "SaaS product development", "AI-enabled solutions", "ERP systems", "UI/UX engineering"],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      url: siteUrl,
+      name: siteConfig.companyName,
+      publisher: { "@id": `${siteUrl}/#organization` },
+      inLanguage: "en-IN",
+    },
   ],
 };
 
@@ -42,11 +42,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   applicationName: "CodeKraft",
   title: {
-    default: "CodeKraft | Website & Web App Development in India",
+    default: "CodeKraft | Software Engineering & SaaS Products",
     template: "%s | CodeKraft",
   },
   description:
-    "CodeKraft builds websites, web applications, e-commerce platforms, ERP systems, AI chatbots, and beautiful digital products for businesses in India.",
+    "CodeKraft builds modern web applications, cloud platforms, AI-enabled solutions and proprietary SaaS products, including the upcoming CampusKraft education ERP.",
   keywords: [
     "CodeKraft",
     "website development India",
@@ -110,7 +110,7 @@ export default function RootLayout({
       <body className="min-h-full" suppressHydrationWarning>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd).replace(/</g, "\\u003c") }}
         />
         <BootLoader />
         <GlobalCodeParticles />

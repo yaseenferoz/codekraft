@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { clientProjects } from "@/lib/client-projects";
 
 const siteUrl = "https://www.codekraft.co.in";
-const lastModified = new Date("2026-07-13");
+const lastModified = new Date("2026-07-16");
 
 const coreRoutes: MetadataRoute.Sitemap = [
   {
@@ -40,6 +40,24 @@ const coreRoutes: MetadataRoute.Sitemap = [
     lastModified,
     changeFrequency: "monthly",
     priority: 0.85,
+  },
+  {
+    url: `${siteUrl}/products/campuskraft`,
+    lastModified,
+    changeFrequency: "weekly",
+    priority: 0.9,
+  },
+  {
+    url: `${siteUrl}/products`,
+    lastModified,
+    changeFrequency: "monthly",
+    priority: 0.85,
+  },
+  {
+    url: `${siteUrl}/roadmap`,
+    lastModified,
+    changeFrequency: "monthly",
+    priority: 0.75,
   },
   {
     url: `${siteUrl}/privacy`,

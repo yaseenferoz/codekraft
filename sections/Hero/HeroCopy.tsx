@@ -7,8 +7,9 @@ export function HeroCopy() {
       <p className="ck-eyebrow">&lt; we build solutions /&gt;</p>
       <TypewriterHeadline />
       <p className="ck-hero-description">
-        CodeKraft is a software development studio that builds powerful web
-        applications, scalable systems, and beautiful digital products.
+        CodeKraft is a software engineering and product company building modern
+        cloud applications, custom digital platforms, AI-enabled solutions, and
+        focused SaaS products.
       </p>
       <PrimaryButton href="/contact">
         start a project

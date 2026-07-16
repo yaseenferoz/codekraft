@@ -3,7 +3,7 @@
 import { FormEvent, useMemo, useState } from "react";
 import { ArrowRight, Braces, Check, ChevronDown, LoaderCircle, RotateCcw } from "lucide-react";
 
-const publicRecipient = "hello@codekraft.co.in";
+const publicRecipient = "yaseenferoz@codekraft.co.in";
 
 const initialForm = {
   name: "",
@@ -118,7 +118,7 @@ export function JsonContactForm() {
     if (submitState === "sending") {
       return (
         <>
-          sending brief
+          sending enquiry
           <LoaderCircle size={17} className="ck-spin" />
         </>
       );
@@ -136,7 +136,7 @@ export function JsonContactForm() {
     if (submitState === "sent") {
       return (
         <>
-          brief delivered
+          enquiry received
           <Check size={17} />
         </>
       );
@@ -144,7 +144,7 @@ export function JsonContactForm() {
 
     return (
       <>
-        send JSON brief
+        Send Enquiry
         <ArrowRight size={17} />
       </>
     );
@@ -197,6 +197,11 @@ export function JsonContactForm() {
             {getButtonContent()}
           </button>
         </div>
+        {submitState === "failed" ? (
+          <p className="ck-contact-form-error" role="alert">
+            We could not send your enquiry right now. Please try again or email {publicRecipient}.
+          </p>
+        ) : null}
       </div>
 
       <div className="ck-json-preview">
@@ -213,8 +218,8 @@ export function JsonContactForm() {
               <Check size={19} />
             </span>
             <p>&lt; brief.sent /&gt;</p>
-            <h2>Project brief delivered.</h2>
-            <small>CodeKraft received your details. The form has been reset.</small>
+            <h2>Thank You for Contacting CodeKraft</h2>
+            <small>Your enquiry has been received. We will review the details and respond as soon as possible at the contact information you provided.</small>
           </section>
         ) : (
           <pre>{JSON.stringify(previewPayload, null, 2)}</pre>

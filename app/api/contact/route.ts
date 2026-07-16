@@ -1,3 +1,5 @@
+import { siteConfig } from "@/lib/site-config";
+
 type ContactProject = {
   name: string;
   email: string;
@@ -21,6 +23,29 @@ type TelegramSendResult = {
   message?: string;
   status?: number;
 };
+
+const contactRateLimit = new Map<string, { count: number; resetAt: number }>();
+
+function cleanInput(value: unknown, max: number) {
+  return String(value ?? "")
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "")
+    .trim()
+    .slice(0, max);
+}
+
+function isRateLimited(request: Request) {
+  const key = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
+    || request.headers.get("x-real-ip")
+    || "unknown";
+  const now = Date.now();
+  const current = contactRateLimit.get(key);
+  if (!current || current.resetAt <= now) {
+    contactRateLimit.set(key, { count: 1, resetAt: now + 15 * 60_000 });
+    return false;
+  }
+  current.count += 1;
+  return current.count > 8;
+}
 
 function escapeHtml(value: unknown) {
   return String(value ?? "")
@@ -113,7 +138,7 @@ function buildHtmlEmail(project: ContactProject) {
       </tr>
       <tr>
         <td style="padding:18px 30px;border-top:1px solid #17213a;color:#6f7d96;font-size:12px;">
-          Sent by CodeKraft website • hello@codekraft.co.in
+          Sent by CodeKraft website • ${siteConfig.contactEmail}
         </td>
       </tr>
     </table>
@@ -210,20 +235,37 @@ async function sendTelegramLead(project: ContactProject): Promise<TelegramSendRe
 }
 
 export async function POST(request: Request) {
-  const payload = await request.json().catch(() => null);
+  if (isRateLimited(request)) {
+    return Response.json({ ok: false, message: "Too many attempts. Please try again later." }, { status: 429, headers: { "Retry-After": "900" } });
+  }
 
-  if (!payload?.project?.email || !payload?.project?.message) {
+  if (Number(request.headers.get("content-length") ?? 0) > 20_000) {
+    return Response.json({ ok: false, message: "Submission is too large." }, { status: 413 });
+  }
+
+  const payload = await request.json().catch(() => null);
+  const rawProject = payload?.project;
+  const project: ContactProject = {
+    name: cleanInput(rawProject?.name, 120),
+    email: cleanInput(rawProject?.email, 180).toLowerCase(),
+    phone: cleanInput(rawProject?.phone, 30),
+    service: cleanInput(rawProject?.service, 80),
+    budget: cleanInput(rawProject?.budget, 60),
+    timeline: cleanInput(rawProject?.timeline, 60),
+    message: cleanInput(rawProject?.message, 4000),
+  };
+
+  if (project.name.length < 2 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(project.email) || project.message.length < 5) {
     return Response.json(
-      { ok: false, message: "Missing required contact payload fields." },
+      { ok: false, message: "Please provide a valid name, email address, and project message." },
       { status: 400 },
     );
   }
 
   const resendApiKey = process.env.RESEND_API_KEY;
   const fromEmail = process.env.RESEND_FROM_EMAIL ?? "CodeKraft <onboarding@resend.dev>";
-  const deliveryEmail = process.env.RESEND_DELIVERY_EMAIL ?? "hello@codekraft.co.in";
-  const project = payload.project as ContactProject;
-  const leadStorage = await saveLead(project, payload.source ?? "contact-form");
+  const deliveryEmail = process.env.RESEND_DELIVERY_EMAIL ?? siteConfig.contactEmail;
+  const leadStorage = await saveLead(project, cleanInput(payload?.source, 80) || "contact-form");
   const telegramLead = await sendTelegramLead(project);
 
   if (resendApiKey) {

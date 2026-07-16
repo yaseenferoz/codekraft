@@ -24,6 +24,19 @@ const revealSelector = [
   ".ck-contact-layout",
   ".ck-policy-panel",
   ".ck-social-row",
+  ".ck-home-products",
+  ".ck-home-product-philosophy",
+  ".ck-home-capabilities",
+  ".ck-home-dual-cta",
+  ".ck-about-vision",
+  ".ck-product-practice-callout",
+  ".ck-portfolio-product-callout",
+  ".ck-products-feature",
+  ".ck-product-directions",
+  ".ck-company-roadmap",
+  ".ck-roadmap-future",
+  ".ck-roadmap-principles",
+  ".ck-roadmap-cta",
 ].join(",");
 
 const spotlightSelector = [
@@ -44,6 +57,12 @@ const spotlightSelector = [
   ".ck-policy-panel article",
   ".ck-flow-lane > span",
   ".ck-flow-lane-output article",
+  ".ck-home-product-philosophy article",
+  ".ck-home-capabilities article",
+  ".ck-about-vision-grid article",
+  ".ck-product-directions article",
+  ".ck-company-roadmap article",
+  ".ck-roadmap-future article",
 ].join(",");
 
 export function ContentMotion() {

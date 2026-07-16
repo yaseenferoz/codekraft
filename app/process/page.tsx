@@ -11,6 +11,8 @@ import {
   ShieldCheck,
   Smartphone,
 } from "lucide-react";
+import Link from "next/link";
+import type { Metadata } from "next";
 import { CodeKraftLogoMark } from "@/components/common/CodeKraftLogoMark";
 import { ModuleAmbientScene } from "@/components/common/ModuleAmbientScene";
 import { Navbar } from "@/components/navigation/Navbar";
@@ -59,7 +61,7 @@ const pipeline = [
   },
 ];
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Process",
   description: "See the CodeKraft delivery process from discovery and design through development, deployment, and support.",
   keywords: [
@@ -69,6 +71,8 @@ export const metadata = {
     "software delivery process",
     "AI cloud database website workflow",
   ],
+  alternates: { canonical: "https://www.codekraft.co.in/process" },
+  openGraph: { title: "CodeKraft Product Engineering Process", description: "From discovery and architecture through development, QA, deployment and continuous improvement.", url: "https://www.codekraft.co.in/process", type: "website" },
 };
 
 export default function ProcessPage() {
@@ -190,6 +194,10 @@ export default function ProcessPage() {
   "deploy with QA",
   "support and improve"
 ]`}</pre>
+      </section>
+      <section className="ck-product-practice-callout">
+        <div><p>&lt; internal.practice /&gt;</p><h2>Applying the Process to Our Own Product</h2><span>Our product-development process is also being applied internally while building CampusKraft—from discovery and architecture through phased MVP delivery and institutional feedback.</span></div>
+        <Link href="/roadmap">View the Product Roadmap</Link>
       </section>
     </main>
   );
