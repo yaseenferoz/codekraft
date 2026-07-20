@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     "website developer Gulbarga",
     "web app development enquiry",
     "software company Karnataka",
-    "yaseenferoz@codekraft.co.in",
+    "hello@codekraft.co.in",
   ],
   alternates: { canonical: "https://www.codekraft.co.in/contact" },
   openGraph: { title: "Contact CodeKraft | Projects and CampusKraft Enquiries", description: "Discuss a custom software project or register institutional interest in CampusKraft.", url: "https://www.codekraft.co.in/contact", type: "website" },

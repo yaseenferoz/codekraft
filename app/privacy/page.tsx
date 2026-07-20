@@ -89,7 +89,7 @@ export default function PrivacyPage() {
   collect: "project enquiry data",
   sellData: false,
   purpose: "reply, plan, deliver",
-  contact: "yaseenferoz@codekraft.co.in"
+  contact: "hello@codekraft.co.in"
 }`}</code>
         </div>
         <div className="ck-legal-grid">

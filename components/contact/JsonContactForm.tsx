@@ -3,7 +3,7 @@
 import { FormEvent, useMemo, useState } from "react";
 import { ArrowRight, Braces, Check, ChevronDown, LoaderCircle, RotateCcw } from "lucide-react";
 
-const publicRecipient = "yaseenferoz@codekraft.co.in";
+const publicRecipient = "hello@codekraft.co.in";
 
 const initialForm = {
   name: "",
